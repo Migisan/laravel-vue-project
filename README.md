@@ -1,0 +1,118 @@
+# Laravel+Vue.js プロジェクトテンプレート
+
+## 環境構築
+
+### プロジェクトのインストール
+
+```
+mkdir project
+cd project
+git clone https://github.com/Migisan/laravel-vue-project.git
+```
+
+### Laradock の設定ファイル編集
+
+```
+cd laradock
+cp .env.example .env
+```
+
+.env ファイル
+
+```
+// プロジェクト
+APP_CODE_PATH_HOST=../src/
+DATA_PATH_HOST=../.laradock/data
+COMPOSER_PROJECT_NAME=プロジェクト名
+
+// PHP
+PHP_VERSION=7.4
+
+// MySQL
+MYSQL_VERSION=5.7
+MYSQL_DATABASE=データベース名
+MYSQL_USER=ユーザー名
+MYSQL_PASSWORD=パスワード
+```
+
+### Docker コンテナの起動
+
+```
+docker-compose up -d nginx mysql phpmyadmin mailhog
+```
+
+コンテナの確認
+
+```
+docker ps --format "table {{.Names}}"
+または
+docker ps
+```
+
+### Laravel のインストール
+
+```
+docker-compose exec --user=laradock workspace bash
+# composer install
+# exit
+```
+
+### Laravel の設定ファイルの編集
+
+```
+cd ../src/
+vim .env
+```
+
+.env ファイル
+
+```
+// データベース
+DB_HOST=mysql
+DB_DATABASE=laradock/.envのMYSQL_DATABASE
+DB_USERNAME=laradock/.envのMYSQL_USER
+DB_PASSWORD=laradock/.envのMYSQL_PASSWORD
+
+// メール
+MAIL_DRIVER=smtp
+MAIL_DRIVER=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=user
+MAIL_PASSWORD=password
+MAIL_ENCRYTION=null
+MAIL_FROM_NAME=送信者の名前
+MAIL_FROM_ADDRESS=送信者のメールアドレス
+```
+
+### ブラウザで確認
+
+- Laravel プロジェクト
+  localhost
+- phpMyAdmin
+  localhost:8081
+  サーバ：mysql
+  ユーザー名：laradock/.env の MYSQL_USER
+  パスワード：laradock/.env の MYSQL_PASSWORD
+- MailHog
+  localhost:8025
+
+### 開発時コマンド
+
+コンテナの操作
+
+```
+cd laradock
+docker-compose up -d nginx mysql phpmyadmin mailhog // コンテナ起動
+docker-compose exec --user=laradock workspace bash // コンテナへアクセス
+docker-compose stop // コンテナ停止
+```
+
+MySQL の使用
+
+```
+docker-compose exec mysql bash
+# mysql -u laradock/.envのMYSQL_USER -p
+# laradock/.envのMYSQL_PASSWORD
+```
+
+## その他
