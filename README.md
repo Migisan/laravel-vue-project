@@ -49,11 +49,13 @@ docker ps --format "table {{.Names}}"
 docker ps
 ```
 
-### Laravel のインストール
+### Laravel,npm パッケージ のインストール
 
 ```
 docker-compose exec --user=laradock workspace bash
 # composer install
+# npm install
+# npm dev
 # exit
 ```
 
