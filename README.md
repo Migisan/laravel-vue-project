@@ -7,7 +7,7 @@
 ```
 mkdir project
 cd project
-git clone https://github.com/Migisan/laravel-vue-project.git
+git clone https://github.com/Migisan/laravel-vue-project.git .
 ```
 
 ### Laradock の設定ファイル編集
@@ -55,7 +55,7 @@ docker ps
 docker-compose exec --user=laradock workspace bash
 # composer install
 # npm install
-# npm dev
+# npm run dev
 # exit
 ```
 
@@ -84,6 +84,16 @@ MAIL_PASSWORD=password
 MAIL_ENCRYTION=null
 MAIL_FROM_NAME=送信者の名前
 MAIL_FROM_ADDRESS=送信者のメールアドレス
+```
+
+### APP KEY の生成、DB 構築
+
+```
+docker-compose exec --user=laradock workspace bash
+# php artisan key:generate
+# php artisan migrate
+# php artisan db:seed
+# exit
 ```
 
 ### ブラウザで確認
