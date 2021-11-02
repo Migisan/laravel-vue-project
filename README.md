@@ -127,4 +127,56 @@ docker-compose exec mysql bash
 # laradock/.envのMYSQL_PASSWORD
 ```
 
+フロントエンドのビルド
+
+```
+# npm run dev
+or
+# npm run watch
+```
+
+## 開発
+
+### マイグレーション(テーブル)
+
+### シーダー(初期データ)
+
+### モデル
+
+### コントローラー
+
+コントローラーの作成
+
+```
+# php artisan make:controller SampleController
+```
+
+### フォームリクエスト(バリデーション)
+
+コントローラーの作成
+
+```
+# php artisan make:request SampleRequest
+```
+
+### テスト
+
+テストの作成
+
+```
+# php artisan make:test SampleApiTest
+```
+
+テスト後のデータベースのリセット
+
+```
+use RefreshDatabase;
+```
+
+テストの実行
+
+```
+./vendor/bin/phpunit --testdox
+```
+
 ## その他

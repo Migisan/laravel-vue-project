@@ -72,8 +72,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
+        // ミドルウェアのグループをapiからwebに変更
+        // 内部からの呼び出しかつクッキーやセッション、CSRFトークンを使用するため
         Route::prefix('api')
-            ->middleware('api')
+            ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
