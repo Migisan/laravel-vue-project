@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
@@ -24,7 +25,9 @@ class AuthController extends Controller
     {
         $user = new User();
 
-        $user->fill($request->all())->save();
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+        $user->fill($input)->save();
 
         return $user;
     }
@@ -63,5 +66,13 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json();
+    }
+
+    /**
+     * ログイン中のユーザー情報の取得
+     */
+    public function login_user(Request $request)
+    {
+        return Auth::user();
     }
 }

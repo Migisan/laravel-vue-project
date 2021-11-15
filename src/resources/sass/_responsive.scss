@@ -1,0 +1,24 @@
+/* ブレイクポイント */
+$pc-min: 960px; // PC
+$tb-max: 959px; // タブレット
+$mb-max: 559px; // スマホ
+
+/* @mediaのフォーマット */
+// PCのみ
+@mixin pc {
+  @media screen and (min-width: $pc-min) {
+    @content;
+  }
+}
+// タブレット
+@mixin tablet {
+  @media screen and (max-width: $tb-max) {
+    @content;
+  }
+}
+// スマホ
+@mixin mobile {
+  @media screen and (max-width: $mb-max) {
+    @content;
+  }
+}

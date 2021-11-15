@@ -22,11 +22,10 @@ use Illuminate\Support\Facades\Route;
  * 認証系
  */
 // 会員登録
-// Route::post('/register', 'Auth\RegisterController@register')->name('register');
 Route::post('/register', 'AuthController@register')->name('register');
 // ログイン
-// Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/login', 'AuthController@login')->name('login');
 // ログアウト
-// Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::post('/logout', 'AuthController@logout')->name('logout');
+// ログインユーザー
+Route::get('/login_user', 'AuthController@login_user')->name('login_user');

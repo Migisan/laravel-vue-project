@@ -1,0 +1,62 @@
+/* font-size */
+//$sizeにpx表示を入れて使う
+@mixin rem($size) {
+  font-size: $size + px; /*IE9以前に対応する*/
+  font-size: ($size / 16) + rem;
+}
+
+/* layer */
+$layer: (
+  header: 100,
+  mask: 50,
+  default: 1
+);
+
+@mixin z-index($key: default) {
+  @if map-has-key($layer, $key) {
+    z-index: map-get($layer, $key);
+  } @else {
+    @error "$layer に #{$key} というキーはありません。";
+  }
+}
+
+/* アスペクト比 */
+@mixin aspect-raito($width: 1, $height: 1) {
+  position: relative;
+  &::before {
+    content: "";
+    display: block;
+    padding-top: percentage($height / $width);
+  }
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    object-fit: cover;
+    font-family: "object-fit:cover;"; // IE対策
+  }
+}
+
+/* テーブル初期レイアウト */
+@mixin table-layout(
+  $border-size: 1px,
+  $border-color: #000,
+  $th-w: 30%,
+  $td-w: 70%
+) {
+  border-collapse: collapse;
+  th,
+  td {
+    border: $border-size solid $border-color;
+  }
+  th {
+    width: $th-w;
+  }
+  td {
+    width: $td-w;
+  }
+}

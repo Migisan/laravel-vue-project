@@ -1,0 +1,24 @@
+.header {
+  background-color: $blue;
+  color: $white;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.navbar {
+  ul {
+    display: flex;
+    li {
+      padding: 4px 8px;
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+      a {
+        color: $white;
+      }
+    }
+  }
+}
