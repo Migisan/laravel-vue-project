@@ -1,7 +1,11 @@
 <template>
   <header class="header">
     <div class="container">
-      <h1>アプリ名</h1>
+      <h1 class="title">
+        <router-link to="/">
+          アプリ名
+        </router-link>
+      </h1>
       <nav class="navbar">
         <ul>
           <li v-if="isLogin">
@@ -27,7 +31,9 @@ export default {
      */
     async logout() {
       await this.$store.dispatch("auth/logout");
-      this.$router.push("/login");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
     }
   },
   computed: {
@@ -42,6 +48,12 @@ export default {
      */
     username() {
       return this.$store.getters["auth/username"];
+    },
+    /**
+     * APIステータスチェック
+     */
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
     }
   }
 };

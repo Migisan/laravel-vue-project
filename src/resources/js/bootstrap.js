@@ -11,3 +11,11 @@ window.axios.interceptors.request.use(config => {
 
   return config;
 });
+
+// レスポンス後の処理を上書き
+window.axios.interceptors.response.use(
+  // 成功時
+  response => response,
+  // 失敗時
+  error => error.response || error
+);

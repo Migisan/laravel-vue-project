@@ -26,6 +26,13 @@
           <div class="form-row">
             <label for="login-email">メールアドレス</label>
             <input type="text" id="login-email" v-model="loginForm.email" />
+            <div v-if="loginErrors" class="errors">
+              <ul v-if="loginErrors.email">
+                <li v-for="msg in loginErrors.email" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="form-row">
             <label for="login-password">パスワード</label>
@@ -34,6 +41,13 @@
               id="login-password"
               v-model="loginForm.password"
             />
+            <div v-if="loginErrors" class="errors">
+              <ul v-if="loginErrors.password">
+                <li v-for="msg in loginErrors.password" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <button type="submit">ログイン</button>
         </form>
@@ -44,10 +58,24 @@
           <div class="form-row">
             <label for="name">名前</label>
             <input type="text" id="name" v-model="registerForm.name" />
+            <div v-if="registerErrors" class="errors">
+              <ul v-if="registerErrors.name">
+                <li v-for="msg in registerErrors.name" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="form-row">
             <label for="email">メールアドレス</label>
             <input type="text" id="email" v-model="registerForm.email" />
+            <div v-if="registerErrors" class="errors">
+              <ul v-if="registerErrors.email">
+                <li v-for="msg in registerErrors.email" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="form-row">
             <label for="password">パスワード</label>
@@ -56,6 +84,13 @@
               id="password"
               v-model="registerForm.password"
             />
+            <div v-if="registerErrors" class="errors">
+              <ul v-if="registerErrors.password">
+                <li v-for="msg in registerErrors.password" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="form-row">
             <label for="password-confirmation">確認用パスワード</label>
@@ -64,6 +99,16 @@
               id="password-confirmation"
               v-model="registerForm.password_confirmation"
             />
+            <div v-if="registerErrors" class="errors">
+              <ul v-if="registerErrors.password_confirmation">
+                <li
+                  v-for="msg in registerErrors.password_confirmation"
+                  :key="msg"
+                >
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
           </div>
           <button type="submit">ユーザー登録</button>
         </form>
@@ -93,7 +138,17 @@ export default {
       }
     };
   },
+  created() {
+    this.clearError();
+  },
   methods: {
+    /**
+     * エラー初期化
+     */
+    clearError() {
+      this.$store.commit("auth/setLoginErrorMessages", null);
+      this.$store.commit("auth/setRegisterErrorMessages", null);
+    },
     /**
      * タブ切り替え
      *
@@ -108,7 +163,9 @@ export default {
     async login() {
       console.log(this.loginForm);
       await this.$store.dispatch("auth/login", this.loginForm);
-      this.$router.push("/");
+      if (this.apiStatus) {
+        this.$router.push("/");
+      }
     },
     /**
      * ユーザー登録処理
@@ -116,7 +173,29 @@ export default {
     async register() {
       console.log(this.registerForm);
       await this.$store.dispatch("auth/register", this.registerForm);
-      this.$router.push("/");
+      if (this.apiStatus) {
+        this.$router.push("/");
+      }
+    }
+  },
+  computed: {
+    /**
+     * APIステータスチェック
+     */
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    /**
+     * ログインエラーチェック
+     */
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
+    },
+    /**
+     * ユーザー登録エラーチェック
+     */
+    registerErrors() {
+      return this.$store.state.auth.registerErrorMessages;
     }
   }
 };

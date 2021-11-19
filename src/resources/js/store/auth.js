@@ -1,7 +1,11 @@
 import axios from "axios";
+import { CREATED, OK, UNPROCESSABLE_ENTITY } from "../util/status";
 
 const state = {
-  user: null
+  user: null,
+  apiStatus: null,
+  registerErrorMessages: null,
+  loginErrorMessages: null
 };
 
 const getters = {
@@ -20,6 +24,33 @@ const mutations = {
    */
   setUser(state, user) {
     state.user = user;
+  },
+  /**
+   * APIステータス設定
+   *
+   * @param {*} state
+   * @param {*} status
+   */
+  setApiStatus(state, status) {
+    state.apiStatus = status;
+  },
+  /**
+   * ユーザー登録エラーメッセージ設定
+   *
+   * @param {*} state
+   * @param {*} messages
+   */
+  setRegisterErrorMessages(state, messages) {
+    state.registerErrorMessages = messages;
+  },
+  /**
+   * ログインエラーメッセージ設定
+   *
+   * @param {*} state
+   * @param {*} messages
+   */
+  setLoginErrorMessages(state, messages) {
+    state.loginErrorMessages = messages;
   }
 };
 
@@ -31,9 +62,27 @@ const actions = {
    * @param {*} data
    */
   async register(context, data) {
+    // API実行
+    context.commit("setApiStatus", null);
     const response = await axios.post("/api/register", data);
     console.log(response);
-    context.commit("setUser", response.data);
+
+    // 成功
+    if (response.status === CREATED) {
+      context.commit("setApiStatus", true);
+      context.commit("setUser", response.data);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      // バリデーションエラー
+      context.commit("setRegisterErrorMessages", response.data.errors);
+    } else {
+      // システムエラー
+      context.commit("error/setCode", response.status, { root: true });
+    }
   },
   /**
    * ログインアクション
@@ -42,9 +91,27 @@ const actions = {
    * @param {*} data
    */
   async login(context, data) {
+    // API実行
+    context.commit("setApiStatus", null);
     const response = await axios.post("/api/login", data);
     console.log(response);
-    context.commit("setUser", response.data);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setUser", response.data);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      // バリデーションエラー
+      context.commit("setLoginErrorMessages", response.data.errors);
+    } else {
+      // システムエラー
+      context.commit("error/setCode", response.status, { root: true });
+    }
   },
   /**
    * ログアウトアクション
@@ -52,9 +119,21 @@ const actions = {
    * @param {*} context
    */
   async logout(context) {
+    // API実行
+    context.commit("setApiStatus", null);
     const response = await axios.post("/api/logout");
     console.log(response);
-    context.commit("setUser", null);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setUser", null);
+      return;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
   },
   /**
    * 現在ログイン中のユーザー取得アクション
@@ -64,10 +143,22 @@ const actions = {
    * @param {*} context
    */
   async currentUser(context) {
+    // API実行
+    context.commit("setApiStatus", null);
     const response = await axios.get("api/login_user");
-    console.log(response);
     const user = response.data || null;
-    context.commit("setUser", user);
+    console.log(response);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setUser", user);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
   }
 };
 

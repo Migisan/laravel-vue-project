@@ -29,3 +29,5 @@ Route::post('/login', 'AuthController@login')->name('login');
 Route::post('/logout', 'AuthController@logout')->name('logout');
 // ログインユーザー
 Route::get('/login_user', 'AuthController@login_user')->name('login_user');
+// トークンリフレッシュ
+Route::get('/reflesh_token', 'AuthController@reflesh_token')->name('reflesh_token');

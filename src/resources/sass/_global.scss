@@ -59,6 +59,7 @@ img {
 
 .container {
   max-width: 1080px;
+  padding: 0 40px;
   margin: 0 auto;
 }
 
@@ -66,4 +67,11 @@ img {
   .container {
     min-height: 400px;
   }
+}
+
+.errors {
+  margin-bottom: 8px;
+  color: $red;
+  font-size: 8px;
+  text-align: left;
 }

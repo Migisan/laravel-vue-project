@@ -75,4 +75,14 @@ class AuthController extends Controller
     {
         return Auth::user();
     }
+
+    /**
+     * トークンをリフレッシュする
+     */
+    public function reflesh_token(Request $request)
+    {
+        $request->session()->regenerateToken();
+
+        return response()->json();
+    }
 }

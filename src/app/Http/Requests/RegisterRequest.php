@@ -25,8 +25,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            // 'email' => 'required|email:strict,dns',
+            'email' => 'required|email:strict',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required',
         ];
     }
 
@@ -41,6 +43,7 @@ class RegisterRequest extends FormRequest
             'name' => '名前',
             'email' => 'メールアドレス',
             'password' => 'パスワード',
+            'password_confirmation' => '確認用パスワード',
         ];
     }
 }
