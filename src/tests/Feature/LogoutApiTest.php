@@ -34,11 +34,12 @@ class LogoutApiTest extends TestCase
      */
     public function logoutAuthenticatedUser()
     {
+        // レスポンス
         $response = $this->actingAs($this->user)->json('POST', route('logout'));
         $response->dump();
 
+        // 検証
         $response->assertStatus(200);
-
         $this->assertGuest();
     }
 }

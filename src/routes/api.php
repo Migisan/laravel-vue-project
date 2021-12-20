@@ -31,3 +31,8 @@ Route::post('/logout', 'AuthController@logout')->name('logout');
 Route::get('/login_user', 'AuthController@login_user')->name('login_user');
 // トークンリフレッシュ
 Route::get('/reflesh_token', 'AuthController@reflesh_token')->name('reflesh_token');
+
+/**
+ * 記事
+ */
+Route::resource('articles', 'ArticleController')->except(['create', 'show', 'edit']);

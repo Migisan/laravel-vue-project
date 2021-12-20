@@ -138,6 +138,26 @@ export default {
       }
     };
   },
+  computed: {
+    /**
+     * APIステータスチェック
+     */
+    apiStatus() {
+      return this.$store.state.auth.apiStatus;
+    },
+    /**
+     * ログインエラーチェック
+     */
+    loginErrors() {
+      return this.$store.state.auth.loginErrorMessages;
+    },
+    /**
+     * ユーザー登録エラーチェック
+     */
+    registerErrors() {
+      return this.$store.state.auth.registerErrorMessages;
+    }
+  },
   created() {
     this.clearError();
   },
@@ -176,26 +196,6 @@ export default {
       if (this.apiStatus) {
         this.$router.push("/");
       }
-    }
-  },
-  computed: {
-    /**
-     * APIステータスチェック
-     */
-    apiStatus() {
-      return this.$store.state.auth.apiStatus;
-    },
-    /**
-     * ログインエラーチェック
-     */
-    loginErrors() {
-      return this.$store.state.auth.loginErrorMessages;
-    },
-    /**
-     * ユーザー登録エラーチェック
-     */
-    registerErrors() {
-      return this.$store.state.auth.registerErrorMessages;
     }
   }
 };

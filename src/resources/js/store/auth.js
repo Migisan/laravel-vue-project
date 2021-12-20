@@ -128,7 +128,7 @@ const actions = {
     if (response.status === OK) {
       context.commit("setApiStatus", true);
       context.commit("setUser", null);
-      return;
+      return false;
     }
 
     // 失敗

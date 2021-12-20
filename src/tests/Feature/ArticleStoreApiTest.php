@@ -6,9 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use App\Article;
 use App\User;
 
-class LoginApiTest extends TestCase
+class ArticleStoreApiTest extends TestCase
 {
     // テスト後のデータベースリセット
     use RefreshDatabase;
@@ -27,22 +28,29 @@ class LoginApiTest extends TestCase
     }
 
     /**
-     * 登録済みのユーザーを認証して返却する
+     * 記事を作成する
      * 
      * @test
      * @return void
      */
-    public function loginAndReturnRegisteredUser()
+    public function createArticle()
     {
+        // データ
+        $data = [
+            'title' => 'テストタイトル',
+            'body' => 'テスト本文',
+        ];
+
         // レスポンス
-        $response = $this->json('POST', route('login'), [
-            'email' => $this->user->email,
-            'password' => 'password',
-        ]);
+        $response = $this->actingAs($this->user)
+            ->json('POST', route('articles.store'), $data);
         $response->dump();
 
+        // 登録したデータ取得
+        $article = Article::first();
+
         // 検証
-        $response->assertStatus(200)->assertJson(['name' => $this->user->name]);
-        $this->assertAuthenticatedAs($this->user);
+        $response->assertStatus(201);
+        $this->assertEquals($article->title, $data['title']);
     }
 }

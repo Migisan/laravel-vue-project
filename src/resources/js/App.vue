@@ -3,6 +3,7 @@
     <Header />
     <main class="main">
       <div class="container">
+        <Message />
         <RouterView />
       </div>
     </main>
@@ -13,13 +14,15 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import Message from "./components/Message.vue";
 
 import { NOT_FOUND, UNAUTHORIZED, INTERNAL_SERVER_ERROR } from "./util/status";
 
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    Message
   },
   computed: {
     errorCode() {

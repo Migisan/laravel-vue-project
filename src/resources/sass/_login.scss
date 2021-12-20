@@ -32,28 +32,27 @@
   border: 1px solid $gray;
 }
 
-.form {
+.login .form {
+  .form-row {
+    label {
+      display: block;
+      margin: 0 0 8px;
+      text-align: left;
+    }
+    input {
+      display: block;
+      width: 100%;
+      padding: 4px 8px;
+      margin: 0 0 8px;
+      border: 1px solid $gray;
+      border-radius: 4px;
+    }
+  }
   button {
     padding: 8px 16px;
     border-radius: 8px;
     background: $blue;
     color: $white;
     font-weight: bold;
-  }
-}
-
-.form-row {
-  label {
-    display: block;
-    margin: 0 0 8px;
-    text-align: left;
-  }
-  input {
-    display: block;
-    width: 100%;
-    padding: 4px 8px;
-    margin: 0 0 8px;
-    border: 1px solid $gray;
-    border-radius: 4px;
   }
 }

@@ -2,6 +2,7 @@ import Vue from "vue";
 import router from "./router";
 import store from "./store";
 import "./bootstrap";
+import "./fontawesome";
 
 import App from "./App.vue";
 

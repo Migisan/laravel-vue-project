@@ -34,9 +34,11 @@ class LoginUserApiTest extends TestCase
      */
     public function getLoginUser()
     {
+        // レスポンス
         $response = $this->actingAs($this->user)->json('GET', route('login_user'));
         $response->dump();
 
+        // 検証
         $response->assertStatus(200)->assertJson([
             'name' => $this->user->name,
         ]);
@@ -50,9 +52,11 @@ class LoginUserApiTest extends TestCase
      */
     public function getNotLoginUser()
     {
+        // レスポンス
         $response = $this->json('GET', route('login_user'));
         $response->dump();
 
+        // 検証
         $response->assertStatus(200);
         $this->assertEquals("", $response->content());
     }

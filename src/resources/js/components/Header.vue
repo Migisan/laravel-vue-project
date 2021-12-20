@@ -8,33 +8,42 @@
       </h1>
       <nav class="navbar">
         <ul>
-          <li v-if="isLogin">
-            <button @click="logout">Logout</button>
-          </li>
-          <li v-else>
-            <router-link to="/login">Login / Register</router-link>
-          </li>
-          <li v-if="isLogin">
-            <span>{{ username }}</span>
-          </li>
+          <template v-if="isLogin">
+            <li>
+              <span>{{ username }}</span>
+            </li>
+            <li>
+              <button @click="showArticleForm = !showArticleForm">
+                投稿する
+              </button>
+            </li>
+            <li>
+              <button @click="logout">Logout</button>
+            </li>
+          </template>
+          <template v-else>
+            <li>
+              <router-link to="/login">Login / Register</router-link>
+            </li>
+          </template>
         </ul>
       </nav>
     </div>
+    <ArticleForm key="store" v-if="showArticleForm" v-model="showArticleForm" />
   </header>
 </template>
 
 <script>
+import ArticleForm from "./ArticleForm.vue";
+
 export default {
-  methods: {
-    /**
-     * ログアウト処理
-     */
-    async logout() {
-      await this.$store.dispatch("auth/logout");
-      if (this.apiStatus) {
-        this.$router.push("/login");
-      }
-    }
+  components: {
+    ArticleForm
+  },
+  data() {
+    return {
+      showArticleForm: false
+    };
   },
   computed: {
     /**
@@ -54,6 +63,17 @@ export default {
      */
     apiStatus() {
       return this.$store.state.auth.apiStatus;
+    }
+  },
+  methods: {
+    /**
+     * ログアウト処理
+     */
+    async logout() {
+      await this.$store.dispatch("auth/logout");
+      if (this.apiStatus) {
+        this.$router.push("/login");
+      }
     }
   }
 };

@@ -139,9 +139,39 @@ or
 
 ### マイグレーション(テーブル)
 
+テーブル作成のマイグレーション
+
+```
+# php artisan make:migration create_samples_table
+```
+
+マイグレーションの実行
+
+```
+# php artisan migrate
+```
+
+マイグレーションの状態確認
+
+```
+# php artisan migrate:status
+```
+
+マイグレーションのロールバック
+
+```
+# php artisan migrate:rollback
+```
+
 ### シーダー(初期データ)
 
 ### モデル
+
+モデルの作成
+
+```
+# php artisan make:model Sample
+```
 
 ### コントローラー
 
@@ -151,15 +181,33 @@ or
 # php artisan make:controller SampleController
 ```
 
+リソースコントローラーの作成
+
+```
+# php artisan make:controller SampleController --resource
+```
+
 ### フォームリクエスト(バリデーション)
 
-コントローラーの作成
+フォームリクエストの作成
 
 ```
 # php artisan make:request SampleRequest
 ```
 
+### ルーティング
+
+```
+# php artisan route:list
+```
+
 ### テスト
+
+テストデータ(ファクトリー)の作成
+
+```
+# php artisan make:factory SampleFactory
+```
 
 テストの作成
 
@@ -176,14 +224,11 @@ use RefreshDatabase;
 テストの実行
 
 ```
+// 全テスト
 ./vendor/bin/phpunit --testdox
+
+// 個別テスト
+./vendor/bin/phpunit tests/Feature/SampleTest.php
 ```
 
 ## その他
-
-### 課題リスト
-
-- 画像アイコンの登録機能
-- Google アカウント認証
-- パスワードリセット機能
-- メール送信機能

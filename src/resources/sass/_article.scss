@@ -1,0 +1,121 @@
+.article_list {
+  max-width: 400px;
+  padding: 8px 0;
+  margin: 0 auto;
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    margin: 0 0 4px;
+  }
+}
+
+.article {
+  padding: 8px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid $gray;
+  &_header {
+    position: relative;
+    display: flex;
+    margin: 0 0 4px;
+  }
+  &_icon {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    background: $gray;
+    border-radius: 50%;
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  &_info {
+    flex: 1 0 auto;
+  }
+  &_created_at {
+    font-size: 8px;
+  }
+  &_dot {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  &_modal {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 0 8px;
+    border: 1px solid $gray;
+    border-radius: 8px;
+    background: $white;
+    font-size: 12px;
+    li {
+      padding: 4px;
+      cursor: pointer;
+      user-select: none;
+      &:not(:last-child) {
+        border-bottom: 1px solid $gray;
+      }
+    }
+  }
+}
+
+.article_form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: $black-transparent;
+  @include z-index(mask);
+}
+
+.article_form .form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 400px;
+  padding: 16px;
+  border: 1px solid $gray;
+  border-radius: 8px;
+  background: $white;
+  overflow: hidden;
+  @include z-index(form);
+  .form-row {
+    color: $black;
+    label {
+      display: block;
+      margin: 0 0 8px;
+      text-align: left;
+    }
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      padding: 4px 8px;
+      margin: 0 0 8px;
+      border: 1px solid $gray;
+      border-radius: 4px;
+    }
+  }
+  button {
+    float: right;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: $blue;
+    color: $white;
+    font-weight: bold;
+  }
+}
