@@ -197,19 +197,25 @@ or
 
 ### ルーティング
 
+ルーティングの確認
+
 ```
 # php artisan route:list
 ```
 
-### テスト
+## テスト
 
-テストデータ(ファクトリー)の作成
+### テストデータ
+
+ファクトリーの作成
 
 ```
 # php artisan make:factory SampleFactory
 ```
 
-テストの作成
+### テストの作成
+
+テストクラスの作成
 
 ```
 # php artisan make:test SampleApiTest

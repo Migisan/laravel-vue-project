@@ -25,9 +25,13 @@ class AuthController extends Controller
     {
         $user = new User();
 
+        // 登録
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
         $user->fill($input)->save();
+
+        // ログイン
+        Auth::login($user);
 
         return $user;
     }
