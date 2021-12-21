@@ -165,6 +165,25 @@ or
 
 ### シーダー(初期データ)
 
+シーダーの作成
+
+```
+# php artisan make:seeder SampleSeeder
+```
+
+シーダーの実行
+
+```
+// オートローダーの再生成
+# composer dump-autoload
+
+// 全シーダー
+# php artisan db:seeder
+
+// 個別シーダー
+# php artisan db:seeder --class=SampleSeeder
+```
+
 ### モデル
 
 モデルの作成
@@ -231,10 +250,14 @@ use RefreshDatabase;
 
 ```
 // 全テスト
-./vendor/bin/phpunit --testdox
+# php artisan test
+or
+# ./vendor/bin/phpunit --testdox
 
 // 個別テスト
-./vendor/bin/phpunit tests/Feature/SampleTest.php
+# php artisan test tests/Feature/SampleTest.php
+or
+# ./vendor/bin/phpunit tests/Feature/SampleTest.php
 ```
 
 ## その他
