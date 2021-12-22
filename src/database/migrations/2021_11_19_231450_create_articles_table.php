@@ -14,10 +14,10 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('body');
-            $table->bigInteger('user_id')->unsigned();
+            $table->id()->comment('記事ID');
+            $table->string('title')->comment('タイトル');
+            $table->text('body')->comment('本文');
+            $table->bigInteger('user_id')->unsigned()->comment('ユーザーID');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();

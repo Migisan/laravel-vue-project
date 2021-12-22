@@ -62,9 +62,15 @@ const actions = {
    * @param {*} data
    */
   async register(context, data) {
+    // データ加工
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+      formData.append(key, data[key]);
+    });
+
     // API実行
     context.commit("setApiStatus", null);
-    const response = await axios.post("/api/register", data);
+    const response = await axios.post("/api/register", formData);
     console.log(response);
 
     // 成功

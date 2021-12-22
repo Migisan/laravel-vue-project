@@ -27,6 +27,8 @@ class AuthController extends Controller
 
         // 登録
         $input = $request->all();
+        $path = $request->file('image')->store('public/user');
+        $input['image_path'] = '/storage/user/' . basename($path);
         $input['password'] = Hash::make($input['password']);
         $user->fill($input)->save();
 

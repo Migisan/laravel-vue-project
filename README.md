@@ -157,10 +157,16 @@ or
 # php artisan migrate:status
 ```
 
-マイグレーションのロールバック
+ロールバックの実行
 
 ```
 # php artisan migrate:rollback
+```
+
+リフレッシュ(ロールバックとマイグレーション)と全シードの実行
+
+```
+# php artisan migrate:refresh --seed
 ```
 
 ### シーダー(初期データ)
@@ -220,6 +226,14 @@ or
 
 ```
 # php artisan route:list
+```
+
+### ビュー
+
+シンボリックリンクを張る
+
+```
+# php artisan storage:link
 ```
 
 ## テスト

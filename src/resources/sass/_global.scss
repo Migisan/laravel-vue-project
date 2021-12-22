@@ -63,10 +63,14 @@ img {
   margin: 0 auto;
 }
 
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .main {
-  .container {
-    min-height: 400px;
-  }
+  flex: 1;
 }
 
 .errors {

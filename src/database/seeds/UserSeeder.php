@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
                 'id'         => 1,
                 'name'       => 'test',
                 'email'      => 'test@example.com',
+                'image_path' => '/storage/user/test.png',
                 'password'   => Hash::make('password'),
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),

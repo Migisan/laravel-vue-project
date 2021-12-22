@@ -6,14 +6,19 @@
       v-model="formShowFlg"
       :editArticle="editArticle"
     />
-    <ul>
-      <Article
-        v-for="article in articles"
-        :key="article.id"
-        :article="article"
-        @eventArticleForm="showArticleForm"
-      />
-    </ul>
+    <div v-if="articles">
+      <div v-if="articles.length === 0" class="article_nothing">
+        投稿がありません。
+      </div>
+      <ul v-else>
+        <Article
+          v-for="article in articles"
+          :key="article.id"
+          :article="article"
+          @eventArticleForm="showArticleForm"
+        />
+      </ul>
+    </div>
     <Pagination :current-page="currentPage" :last-page="lastPage" />
   </div>
 </template>
