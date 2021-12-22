@@ -1,7 +1,12 @@
 <template>
   <li class="article">
     <div class="article_header">
-      <div class="article_icon"><i class="fas fa-user"></i></div>
+      <div class="article_icon">
+        <img
+          :src="article.user.image_path"
+          :alt="article.user.name + 'のプロフィール画像'"
+        />
+      </div>
       <div class="article_info">
         <div class="article_username">{{ article.user.name }}</div>
         <div class="article_created_at">{{ article.created_at }}</div>

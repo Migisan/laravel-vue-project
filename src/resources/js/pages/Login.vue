@@ -78,6 +78,39 @@
             </div>
           </div>
           <div class="form-row">
+            <label for="image">プロフィール画像</label>
+            <input
+              type="file"
+              id="image"
+              class="input-hidden"
+              @change="uploadImage"
+            />
+            <div
+              class="upload"
+              @click="clickUploadImage"
+              @dragenter.prevent="dragEnter"
+              @dragleave.prevent="dragLeave"
+              @dragover.prevent
+              @drop.prevent="dropUploadImage"
+            >
+              <div
+                v-show="registerForm.image"
+                id="previewArea"
+                :class="{ enter: isEnter }"
+              ></div>
+              <div v-show="!registerForm.image" :class="{ enter: isEnter }">
+                プロフィール画像を選択してください。
+              </div>
+            </div>
+            <div v-if="registerErrors" class="errors">
+              <ul v-if="registerErrors.image">
+                <li v-for="msg in registerErrors.image" :key="msg">
+                  {{ msg }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-row">
             <label for="password">パスワード</label>
             <input
               type="password"
@@ -124,6 +157,8 @@ export default {
     return {
       // タブ
       tab: "login",
+      // ドラッグ&ドロップエリア,
+      isEnter: false,
       // ログイン
       loginForm: {
         email: "",
@@ -133,6 +168,7 @@ export default {
       registerForm: {
         name: "",
         email: "",
+        image: null,
         password: "",
         password_confirmation: ""
       }
@@ -176,6 +212,64 @@ export default {
      */
     changeTab(selectTab) {
       this.tab = selectTab;
+    },
+    /**
+     * プロフィール画像のアップロード
+     */
+    uploadImage(event) {
+      const file = event.target.files[0];
+      this.registerForm.image = file;
+      this.previewImage(file);
+    },
+    /**
+     * アップロードボタンのクリック
+     */
+    clickUploadImage(event) {
+      document.getElementById("image").click();
+    },
+    /**
+     * ドラッグエンター(枠内入った)
+     */
+    dragEnter() {
+      this.isEnter = true;
+    },
+    /**
+     * ドラッグリーブ(枠内出た)
+     */
+    dragLeave() {
+      this.isEnter = false;
+    },
+    /**
+     * アップロードファイルのドロップ
+     */
+    dropUploadImage(event) {
+      this.isEnter = false;
+      const file = event.dataTransfer.files[0];
+      this.registerForm.image = file;
+      this.previewImage(file);
+    },
+    /**
+     * 画像のサムネイル表示
+     */
+    previewImage(file) {
+      if (!file) return;
+
+      const reader = new FileReader();
+      const previewArea = document.getElementById("previewArea");
+      const previewImg = document.getElementById("previewImg");
+
+      if (previewImg) {
+        previewArea.removeChild(previewImg);
+      }
+
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        const img = document.createElement("img");
+        img.setAttribute("src", String(reader.result));
+        img.setAttribute("id", "previewImg");
+        previewArea.appendChild(img);
+      };
     },
     /**
      * ログイン処理

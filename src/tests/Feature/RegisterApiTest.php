@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 
 class RegisterApiTest extends TestCase
@@ -21,10 +23,14 @@ class RegisterApiTest extends TestCase
      */
     public function createAndReturnNewUser()
     {
+        // 画像ファイルの生成
+        $file = UploadedFile::fake()->image('test.jpg');
+
         // データ
         $data = [
             'name' => 'new user',
             'email' => 'new_user@example.com',
+            'image' => $file,
             'password' => 'test1234',
             'password_confirmation' => 'test1234',
         ];
@@ -39,5 +45,9 @@ class RegisterApiTest extends TestCase
         // 検証
         $this->assertEquals($data['name'], $user->name);
         $response->assertStatus(201)->assertJson(['name' => $user->name]);
+        Storage::disk('public')->assertExists('/user/' . $file->hashName());
+
+        // 画像ファイルの削除
+        Storage::disk('public')->delete('/user/' . $file->hashName());
     }
 }

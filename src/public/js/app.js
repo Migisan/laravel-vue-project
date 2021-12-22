@@ -6583,6 +6583,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     article: {
@@ -7096,6 +7101,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -7318,11 +7328,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       // タブ
       tab: "login",
+      // ドラッグ&ドロップエリア,
+      isEnter: false,
       // ログイン
       loginForm: {
         email: "",
@@ -7332,6 +7377,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       registerForm: {
         name: "",
         email: "",
+        image: null,
         password: "",
         password_confirmation: ""
       }
@@ -7378,6 +7424,69 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      */
     changeTab: function changeTab(selectTab) {
       this.tab = selectTab;
+    },
+
+    /**
+     * プロフィール画像のアップロード
+     */
+    uploadImage: function uploadImage(event) {
+      var file = event.target.files[0];
+      this.registerForm.image = file;
+      this.previewImage(file);
+    },
+
+    /**
+     * アップロードボタンのクリック
+     */
+    clickUploadImage: function clickUploadImage(event) {
+      document.getElementById("image").click();
+    },
+
+    /**
+     * ドラッグエンター(枠内入った)
+     */
+    dragEnter: function dragEnter() {
+      this.isEnter = true;
+    },
+
+    /**
+     * ドラッグリーブ(枠内出た)
+     */
+    dragLeave: function dragLeave() {
+      this.isEnter = false;
+    },
+
+    /**
+     * アップロードファイルのドロップ
+     */
+    dropUploadImage: function dropUploadImage(event) {
+      this.isEnter = false;
+      var file = event.dataTransfer.files[0];
+      this.registerForm.image = file;
+      this.previewImage(file);
+    },
+
+    /**
+     * 画像のサムネイル表示
+     */
+    previewImage: function previewImage(file) {
+      if (!file) return;
+      var reader = new FileReader();
+      var previewArea = document.getElementById("previewArea");
+      var previewImg = document.getElementById("previewImg");
+
+      if (previewImg) {
+        previewArea.removeChild(previewImg);
+      }
+
+      reader.readAsDataURL(file);
+
+      reader.onload = function () {
+        var img = document.createElement("img");
+        img.setAttribute("src", String(reader.result));
+        img.setAttribute("id", "previewImg");
+        previewArea.appendChild(img);
+      };
     },
 
     /**
@@ -8692,6 +8801,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "app" },
     [
       _c("Header"),
       _vm._v(" "),
@@ -8733,7 +8843,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("li", { staticClass: "article" }, [
     _c("div", { staticClass: "article_header" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "article_icon" }, [
+        _c("img", {
+          attrs: {
+            src: _vm.article.user.image_path,
+            alt: _vm.article.user.name + "のプロフィール画像"
+          }
+        })
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "article_info" }, [
         _c("div", { staticClass: "article_username" }, [
@@ -8788,16 +8905,7 @@ var render = function() {
     _c("p", [_vm._v(_vm._s(_vm.article.body))])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "article_icon" }, [
-      _c("i", { staticClass: "fas fa-user" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -9209,17 +9317,25 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _c(
-        "ul",
-        _vm._l(_vm.articles, function(article) {
-          return _c("Article", {
-            key: article.id,
-            attrs: { article: article },
-            on: { eventArticleForm: _vm.showArticleForm }
-          })
-        }),
-        1
-      ),
+      _vm.articles
+        ? _c("div", [
+            _vm.articles.length === 0
+              ? _c("div", { staticClass: "article_nothing" }, [
+                  _vm._v("\n      投稿がありません。\n    ")
+                ])
+              : _c(
+                  "ul",
+                  _vm._l(_vm.articles, function(article) {
+                    return _c("Article", {
+                      key: article.id,
+                      attrs: { article: article },
+                      on: { eventArticleForm: _vm.showArticleForm }
+                    })
+                  }),
+                  1
+                )
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("Pagination", {
         attrs: { "current-page": _vm.currentPage, "last-page": _vm.lastPage }
@@ -9513,6 +9629,97 @@ var render = function() {
                         ? _c(
                             "ul",
                             _vm._l(_vm.registerErrors.email, function(msg) {
+                              return _c("li", { key: msg }, [
+                                _vm._v(
+                                  "\n                " +
+                                    _vm._s(msg) +
+                                    "\n              "
+                                )
+                              ])
+                            }),
+                            0
+                          )
+                        : _vm._e()
+                    ])
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-row" }, [
+                _c("label", { attrs: { for: "image" } }, [
+                  _vm._v("プロフィール画像")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-hidden",
+                  attrs: { type: "file", id: "image" },
+                  on: { change: _vm.uploadImage }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "upload",
+                    on: {
+                      click: _vm.clickUploadImage,
+                      dragenter: function($event) {
+                        $event.preventDefault()
+                        return _vm.dragEnter.apply(null, arguments)
+                      },
+                      dragleave: function($event) {
+                        $event.preventDefault()
+                        return _vm.dragLeave.apply(null, arguments)
+                      },
+                      dragover: function($event) {
+                        $event.preventDefault()
+                      },
+                      drop: function($event) {
+                        $event.preventDefault()
+                        return _vm.dropUploadImage.apply(null, arguments)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.registerForm.image,
+                          expression: "registerForm.image"
+                        }
+                      ],
+                      class: { enter: _vm.isEnter },
+                      attrs: { id: "previewArea" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.registerForm.image,
+                            expression: "!registerForm.image"
+                          }
+                        ],
+                        class: { enter: _vm.isEnter }
+                      },
+                      [
+                        _vm._v(
+                          "\n              プロフィール画像を選択してください。\n            "
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.registerErrors
+                  ? _c("div", { staticClass: "errors" }, [
+                      _vm.registerErrors.image
+                        ? _c(
+                            "ul",
+                            _vm._l(_vm.registerErrors.image, function(msg) {
                               return _c("li", { key: msg }, [
                                 _vm._v(
                                   "\n                " +
@@ -27598,22 +27805,27 @@ var actions = {
    */
   register: function register(context, data) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response;
+      var formData, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              // API実行
-              context.commit("setApiStatus", null);
-              _context.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/register", data);
+              // データ加工
+              formData = new FormData();
+              Object.keys(data).forEach(function (key) {
+                formData.append(key, data[key]);
+              }); // API実行
 
-            case 3:
+              context.commit("setApiStatus", null);
+              _context.next = 5;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/register", formData);
+
+            case 5:
               response = _context.sent;
               console.log(response); // 成功
 
               if (!(response.status === _util_status__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
-                _context.next = 9;
+                _context.next = 11;
                 break;
               }
 
@@ -27621,7 +27833,7 @@ var actions = {
               context.commit("setUser", response.data);
               return _context.abrupt("return", false);
 
-            case 9:
+            case 11:
               // 失敗
               context.commit("setApiStatus", false);
 
@@ -27635,7 +27847,7 @@ var actions = {
                 });
               }
 
-            case 11:
+            case 13:
             case "end":
               return _context.stop();
           }
