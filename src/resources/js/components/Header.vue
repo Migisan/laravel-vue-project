@@ -10,7 +10,9 @@
         <ul>
           <template v-if="isLogin">
             <li>
-              <span>{{ username }}</span>
+              <router-link :to="`/user/?id=${userid}`">
+                <span>{{ username }}</span>
+              </router-link>
             </li>
             <li>
               <button @click="showArticleForm = !showArticleForm">
@@ -51,6 +53,12 @@ export default {
      */
     isLogin() {
       return this.$store.getters["auth/check"];
+    },
+    /**
+     * ログイン中のユーザID
+     */
+    userid() {
+      return this.$store.getters["auth/userid"];
     },
     /**
      * ログイン中のユーザー名

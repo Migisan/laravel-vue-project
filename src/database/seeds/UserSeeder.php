@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class UserSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class UserSeeder extends Seeder
         // DB初期化
         DB::table('users')->truncate();
 
-        // データ登録
+        // 初期データ
         DB::table('users')->insert(array(
             [
                 'id'         => 1,
@@ -29,5 +30,8 @@ class UserSeeder extends Seeder
                 'updated_at' => new DateTime(),
             ],
         ));
+
+        // ダミーデータ
+        factory(User::class, 10)->create();
     }
 }

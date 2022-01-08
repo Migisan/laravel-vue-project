@@ -11,6 +11,8 @@ const state = {
 const getters = {
   // ログインチェック
   check: state => !!state.user,
+  // ログイン中のユーザーID
+  userid: state => (state.user ? state.user.id : 0),
   // ログイン中のユーザー名
   username: state => (state.user ? state.user.name : "")
 };
@@ -151,7 +153,7 @@ const actions = {
   async currentUser(context) {
     // API実行
     context.commit("setApiStatus", null);
-    const response = await axios.get("api/login_user");
+    const response = await axios.get("/api/login_user");
     const user = response.data || null;
     console.log(response);
 

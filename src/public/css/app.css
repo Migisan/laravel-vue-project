@@ -128,6 +128,10 @@ img {
 
 .navbar ul li a {
   color: #ffffff;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .footer {
@@ -370,6 +374,116 @@ img {
   padding: 4px 8px;
   border-radius: 8px;
   background: #3490dc;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.user_detail,
+.user_update {
+  max-width: 600px;
+  padding: 8px 0;
+  margin: 0 auto;
+}
+
+.user_update {
+  text-align: center;
+}
+
+.user_icon {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-right: 8px;
+  background: #bbbbbb;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user_icon svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.user_icon img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+}
+
+.user_name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user_button {
+  overflow: hidden;
+}
+
+.user_button button {
+  float: right;
+  padding: 4px 8px;
+  border: 1px solid #bbbbbb;
+  border-radius: 24px;
+}
+
+.user_update .form .form-row label {
+  display: block;
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+.user_update .form .form-row input {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  margin: 0 0 8px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+}
+
+.user_update .form .form-row .input-hidden {
+  display: none;
+}
+
+.user_update .form .form-row .upload {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  line-height: 200px;
+  padding: 4px 8px;
+  margin: 0 0 8px;
+  border: 1px solid #bbbbbb;
+  border-radius: 4px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.user_update .form .form-row .enter {
+  opacity: 0.5;
+}
+
+.user_update .form button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #3490dc;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.button-delete {
+  width: 100%;
+  padding: 8px 16px;
+  margin: 4px 0 0;
+  border-radius: 8px;
+  background: #e3342f;
   color: #ffffff;
   font-weight: bold;
 }

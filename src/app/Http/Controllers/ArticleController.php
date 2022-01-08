@@ -15,6 +15,7 @@ class ArticleController extends Controller
      */
     public function __construct()
     {
+        // ミドルウェア
         $this->middleware('auth')->except(['index']);
     }
 

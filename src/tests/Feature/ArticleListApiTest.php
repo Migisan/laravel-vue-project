@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use App\Article;
+use App\User;
 
 class ArticleListApiTest extends TestCase
 {
@@ -24,6 +25,9 @@ class ArticleListApiTest extends TestCase
 
         // 日付フォーマット
         $this->dataFormat = 'Y-m-d H:i:s';
+
+        // テストユーザーの作成
+        $this->user = factory(User::class)->create();
     }
 
     /**
@@ -58,6 +62,7 @@ class ArticleListApiTest extends TestCase
                     'id' => $article->user->id,
                     'name' => $article->user->name,
                     'email' => $article->user->email,
+                    'image_path' => $article->user->image_path,
                     'created_at' => $article->user->created_at->format($this->dataFormat),
                     'updated_at' => $article->user->updated_at->format($this->dataFormat),
                     'deleted_at' => null,

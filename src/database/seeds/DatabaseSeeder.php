@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // 全シーダー実行
         $this->call([
             UserSeeder::class,
+            ArticleSeeder::class,
         ]);
 
         // 外部キー制約の設定
