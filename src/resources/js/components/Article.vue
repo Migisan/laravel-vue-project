@@ -2,10 +2,12 @@
   <li class="article">
     <div class="article_header">
       <div class="article_icon">
-        <img
-          :src="article.user.image_path"
-          :alt="article.user.name + 'のプロフィール画像'"
-        />
+        <router-link :to="`/user/?id=${article.user.id}`">
+          <img
+            :src="article.user.image_path"
+            :alt="article.user.name + 'のプロフィール画像'"
+          />
+        </router-link>
       </div>
       <div class="article_info">
         <div class="article_username">{{ article.user.name }}</div>
@@ -80,26 +82,9 @@ export default {
     /**
      * 記事の削除
      */
-    async deleteArticle() {
+    deleteArticle() {
       this.toggleModal();
-      if (confirm("本当に削除しますか？")) {
-        await this.$store.dispatch("article/delete", this.article.id);
-        // リダイレクト
-        if (this.apiStatus) {
-          if (this.currentPage === 1) {
-            // 1ページ目
-            this.$router.go({
-              path: "/",
-              force: true
-            });
-          } else {
-            // 2ページ目以降
-            this.$router.push("/", e => {
-              console.log(e);
-            });
-          }
-        }
-      }
+      this.$emit("eventArticleDelete", this.article.id);
     }
   }
 };

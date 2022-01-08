@@ -63,6 +63,7 @@ class User extends Authenticatable
      */
     public function articles(): HasMany
     {
+        // return $this->hasMany('App\Article')->orderBy('created_at', 'desc');
         return $this->hasMany('App\Article');
     }
 }

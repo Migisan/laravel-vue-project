@@ -16,6 +16,7 @@
           :key="article.id"
           :article="article"
           @eventArticleForm="showArticleForm"
+          @eventArticleDelete="deleteArticle"
         />
       </ul>
     </div>
@@ -74,9 +75,35 @@ export default {
     }
   },
   methods: {
+    /**
+     * 記事更新フォームの表示
+     */
     showArticleForm(editArticle) {
       this.editArticle = editArticle;
       this.formShowFlg = !this.formShowFlg;
+    },
+    /**
+     * 記事の削除
+     */
+    async deleteArticle(ArticleId) {
+      if (confirm("本当に削除しますか？")) {
+        await this.$store.dispatch("article/delete", ArticleId);
+        // リダイレクト
+        if (this.apiStatus) {
+          if (this.currentPage === 1) {
+            // 1ページ目
+            this.$router.go({
+              path: "/",
+              force: true
+            });
+          } else {
+            // 2ページ目以降
+            this.$router.push("/", e => {
+              console.log(e);
+            });
+          }
+        }
+      }
     }
   },
   watch: {

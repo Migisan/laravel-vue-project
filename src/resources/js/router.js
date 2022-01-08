@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 
 import ArticleList from "./pages/ArticleList.vue";
 import Login from "./pages/Login.vue";
+import UserDetail from "./pages/UserDetail.vue";
+import UserUpdate from "./pages/UserUpdate.vue";
 import SystemError from "./pages/errors/SystemError.vue";
 import NotFound from "./pages/errors/NotFound.vue";
 
@@ -28,6 +30,22 @@ const routes = [
       } else {
         next();
       }
+    }
+  },
+  {
+    path: "/user",
+    component: UserDetail,
+    props: route => {
+      const id = route.query.id;
+      return { id: /^[1-9][0-9]*$/.test(id) ? id * 1 : 1 };
+    }
+  },
+  {
+    path: "/user/update",
+    component: UserUpdate,
+    props: route => {
+      const id = route.query.id;
+      return { id: /^[1-9][0-9]*$/.test(id) ? id * 1 : 1 };
     }
   },
   {

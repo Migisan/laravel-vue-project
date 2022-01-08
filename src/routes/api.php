@@ -36,3 +36,8 @@ Route::get('/reflesh_token', 'AuthController@reflesh_token')->name('reflesh_toke
  * 記事
  */
 Route::resource('articles', 'ArticleController')->except(['create', 'show', 'edit']);
+
+/**
+ * ユーザー
+ */
+Route::resource('users', 'UserController')->only(['show', 'update', 'destroy']);

@@ -1,0 +1,101 @@
+.user_detail,
+.user_update {
+  max-width: 600px;
+  padding: 8px 0;
+  margin: 0 auto;
+}
+
+.user_update {
+  text-align: center;
+}
+
+.user {
+  &_icon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-right: 8px;
+    background: $gray;
+    border-radius: 50%;
+    overflow: hidden;
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+  &_name {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  &_button {
+    overflow: hidden;
+    button {
+      float: right;
+      padding: 4px 8px;
+      border: 1px solid $gray;
+      border-radius: 24px;
+    }
+  }
+}
+
+.user_update .form {
+  .form-row {
+    label {
+      display: block;
+      margin: 0 0 8px;
+      text-align: left;
+    }
+    input {
+      display: block;
+      width: 100%;
+      padding: 4px 8px;
+      margin: 0 0 8px;
+      border: 1px solid $gray;
+      border-radius: 4px;
+    }
+    .input-hidden {
+      display: none;
+    }
+    .upload {
+      display: block;
+      width: 100%;
+      min-height: 200px;
+      line-height: 200px;
+      padding: 4px 8px;
+      margin: 0 0 8px;
+      border: 1px solid $gray;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .enter {
+      opacity: 0.5;
+    }
+  }
+  button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: $blue;
+    color: $white;
+    font-weight: bold;
+  }
+}
+
+.button-delete {
+  // display: block;
+  width: 100%;
+  padding: 8px 16px;
+  margin: 4px 0 0;
+  border-radius: 8px;
+  background: $red;
+  color: $white;
+  font-weight: bold;
+}
