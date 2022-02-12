@@ -5,18 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use App\Services\ArticleServiceInterface;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Article;
 
 class ArticleController extends Controller
 {
     /**
+     * プロパティ
+     */
+    private $article_service;
+
+    /**
      * コンストラクタ
      */
-    public function __construct()
+    public function __construct(ArticleServiceInterface $article_service)
     {
         // ミドルウェア
         $this->middleware('auth')->except(['index']);
+        // DI
+        $this->article_service = $article_service;
     }
 
     /**
@@ -26,7 +34,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::with(['user'])->orderBy('created_at', 'desc')->paginate();
+        $articles = $this->article_service->getArticleList();
 
         return $articles;
     }
