@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\Article;
-use App\User;
+use App\Models\Article;
+use App\Models\User;
 
 class ArticleStoreApiTest extends TestCase
 {

@@ -7,13 +7,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
-use App\User;
+
+use App\Services\AuthServiceInterface;
+
+use App\Models\User;
 
 class AuthController extends Controller
 {
     use AuthenticatesUsers;
+
+    /**
+     * プロパティ
+     */
+    private $auth_service;
+
+    /**
+     * コンストラクタ
+     */
+    public function __construct(AuthServiceInterface $auth_service)
+    {
+        // DI
+        $this->auth_service = $auth_service;
+    }
 
     /**
      * 会員登録
@@ -26,7 +44,7 @@ class AuthController extends Controller
         $user = new User();
 
         // 登録
-        $input = $request->all();
+        $input = $request->only(['name', 'email', 'password']);
         $path = $request->file('image')->store('public/user');
         $input['image_path'] = '/storage/user/' . basename($path);
         $input['password'] = Hash::make($input['password']);
@@ -76,10 +94,15 @@ class AuthController extends Controller
 
     /**
      * ログイン中のユーザー情報の取得
+     * 
+     * @param Request $request
+     * @return ?\App\Models\User
      */
     public function login_user(Request $request)
     {
-        return Auth::user();
+        $user = $this->auth_service->getAuth();
+
+        return $user;
     }
 
     /**

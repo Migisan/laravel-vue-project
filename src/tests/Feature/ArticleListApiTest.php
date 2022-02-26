@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\Article;
-use App\User;
+use App\Models\Article;
+use App\Models\User;
 
 class ArticleListApiTest extends TestCase
 {
@@ -44,7 +44,7 @@ class ArticleListApiTest extends TestCase
         // レスポンス
         $response = $this->json('GET', route('articles.index'));
         $response->dump();
-        
+
         // 生成したデータ取得
         $articles = Article::with(['user'])->orderBy('created_at', 'desc')->get();
 
