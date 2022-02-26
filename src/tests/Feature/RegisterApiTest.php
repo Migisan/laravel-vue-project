@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\User;
+use App\Models\User;
 
 class RegisterApiTest extends TestCase
 {

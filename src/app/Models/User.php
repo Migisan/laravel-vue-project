@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -63,7 +63,6 @@ class User extends Authenticatable
      */
     public function articles(): HasMany
     {
-        // return $this->hasMany('App\Article')->orderBy('created_at', 'desc');
-        return $this->hasMany('App\Article');
+        return $this->hasMany('App\Models\Article');
     }
 }

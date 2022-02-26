@@ -14,6 +14,18 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         /**
+         * 認証
+         */
+        $this->app->bind(
+            \App\Services\AuthServiceInterface::class,
+            function ($app) {
+                return new \App\Services\AuthService(
+                    $app->make(\App\Repositories\UserRepositoryInterface::class)
+                );
+            },
+        );
+
+        /**
          * 記事
          */
         $this->app->bind(
@@ -24,11 +36,12 @@ class AppServiceProvider extends ServiceProvider
             \App\Services\ArticleServiceInterface::class,
             function ($app) {
                 return new \App\Services\ArticleService(
+                    $app->make(\App\Repositories\UserRepositoryInterface::class),
                     $app->make(\App\Repositories\ArticleRepositoryInterface::class)
                 );
             },
         );
-        
+
         /**
          * ユーザー
          */

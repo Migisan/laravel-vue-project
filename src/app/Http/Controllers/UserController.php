@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Http\Requests\UserUpdateRequest;
+
 use App\Services\UserServiceInterface;
 use App\Services\ArticleServiceInterface;
-use App\Http\Requests\UserUpdateRequest;
-use App\User;
 
 class UserController extends Controller
 {
@@ -63,12 +63,14 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User  $user
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        $articles = $this->article_service->getArticleListByUser($user->id);
+        $user = $this->user_service->findUser($id);
+
+        $articles = $this->article_service->getArticleListByUser($id);
 
         return compact('user', 'articles');
     }
@@ -88,23 +90,17 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, int $id)
     {
-        // リクエスト取得
-        $input = $request->all();
-
-        // 画像
-        if ($request->file('image')) {
-            // 画像保存
-            $path = $this->user_service->saveImageFile($request);
-            $input['image_path'] = '/storage/user/' . basename($path);
-        }
+        // リクエスト
+        $input = $request->only(['name', 'email']);
+        $file = $request->file('image');
 
         // 更新
-        $user = $this->user_service->updateUser($user, $input);
+        $user = $this->user_service->updateUser($id, $input, $file);
 
         return $user;
     }
@@ -112,11 +108,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        $this->user_service->deleteUser($user);
+        $this->user_service->deleteUser($id);
     }
 }

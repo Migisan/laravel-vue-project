@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\User;
+use App\Models\User;
 
 class LoginUserApiTest extends TestCase
 {
@@ -37,6 +37,7 @@ class LoginUserApiTest extends TestCase
         // レスポンス
         $response = $this->actingAs($this->user)->json('GET', route('login_user'));
         $response->dump();
+        // dump(User::find($this->user->id));
 
         // 検証
         $response->assertStatus(200)->assertJson([

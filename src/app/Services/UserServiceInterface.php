@@ -2,33 +2,32 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-use App\User;
+use Illuminate\Http\UploadedFile;
 
 interface UserServiceInterface
 {
   /**
-   * 画像ファイルの保存
+   * ユーザー取得
    * 
-   * @param Request $request
-   * @return string $path
+   * @param int $id
+   * @return \App\Models\User $user
    */
-  public function saveImageFile(Request $request): string;
+  public function findUser(int $id): \App\Models\User;
 
   /**
    * ユーザー更新
    * 
-   * @param User $user
+   * @param int $id
    * @param array $input
-   * @return User $user
+   * @return \App\Models\User $user
    */
-  public function updateUser(User $user, array $input): User;
+  public function updateUser(int $id, array $input, UploadedFile $file): \App\Models\User;
 
   /**
-   * ユーザー更新
+   * ユーザー削除
    * 
-   * @param User $user
+   * @param int $id
    * @return void
    */
-  public function deleteUser(User $user): void;
+  public function deleteUser(int $id): void;
 }

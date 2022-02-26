@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+
 use App\Services\UserServiceInterface;
+
 use App\Repositories\UserRepositoryInterface;
-use App\User;
 
 class UserService implements UserServiceInterface
 {
@@ -21,28 +22,14 @@ class UserService implements UserServiceInterface
   }
 
   /**
-   * 画像ファイルの保存
+   * ユーザー取得
    * 
-   * @param Request $request
-   * @return string $path
+   * @param int $id
+   * @return \App\Models\User $user
    */
-  public function saveImageFile(Request $request): string
+  public function findUser(int $id): \App\Models\User
   {
-    $path = $request->file('image')->store('public/user');
-
-    return $path;
-  }
-
-  /**
-   * ユーザー更新
-   * 
-   * @param User $user
-   * @param array $input
-   * @return User $user
-   */
-  public function updateUser(User $user, array $input): User
-  {
-    $user = $this->user_repository->updateUser($user, $input);
+    $user = $this->user_repository->find($id);
 
     return $user;
   }
@@ -50,11 +37,32 @@ class UserService implements UserServiceInterface
   /**
    * ユーザー更新
    * 
-   * @param User $user
+   * @param int $id
+   * @param array $input
+   * @return \App\Models\User $user
+   */
+  public function updateUser(int $id, array $input, UploadedFile $file): \App\Models\User
+  {
+    // 画像
+    if (isset($file)) {
+      $path = $file->store('public/user');
+      $input['image_path'] = '/storage/user/' . basename($path);
+    }
+
+    // 更新
+    $user = $this->user_repository->update($id, $input);
+
+    return $user;
+  }
+
+  /**
+   * ユーザー削除
+   * 
+   * @param int $id
    * @return void
    */
-  public function deleteUser(User $user): void
+  public function deleteUser(int $id): void
   {
-    $user->delete();
+    $this->user_repository->delete($id);
   }
 }

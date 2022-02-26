@@ -2,12 +2,12 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Article;
+use App\Models\Article;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
 $factory->define(Article::class, function (Faker $faker) {
-    $users = App\User::all();
+    $users = App\Models\User::all();
     $user_id = $users->count() === 0 ? 0 : $users->random(1)[0]->id;
 
     return [

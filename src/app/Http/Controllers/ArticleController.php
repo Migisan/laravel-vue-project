@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
-use App\Services\ArticleServiceInterface;
 use App\Http\Requests\ArticleStoreRequest;
-use App\Article;
+
+use App\Services\ArticleServiceInterface;
 
 class ArticleController extends Controller
 {
@@ -57,11 +56,11 @@ class ArticleController extends Controller
      */
     public function store(ArticleStoreRequest $request)
     {
-        $article = new Article();
+        // リクエスト
+        $input = $request->only(['title', 'body']);
 
-        $input = $request->all();
-        $article->user_id = Auth::id();
-        $article->fill($input)->save();
+        // 登録
+        $article = $this->article_service->storeArticle($input);
 
         return $article;
     }
@@ -92,13 +91,16 @@ class ArticleController extends Controller
      * 記事更新処理
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Article  $article
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleStoreRequest $request, Article $article)
+    public function update(ArticleStoreRequest $request, int $id)
     {
-        $input = $request->all();
-        $article->fill($input)->save();
+        // リクエスト
+        $input = $request->only(['title', 'body']);
+
+        // 更新
+        $article = $this->article_service->updateArticle($id, $input);
 
         return $article;
     }
@@ -106,11 +108,12 @@ class ArticleController extends Controller
     /**
      * 記事削除処理
      *
-     * @param  Article  $article
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(int $id)
     {
-        $article->delete();
+        // 削除
+        $this->article_service->deleteArticle($id);
     }
 }
