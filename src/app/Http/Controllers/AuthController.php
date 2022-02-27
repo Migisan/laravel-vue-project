@@ -68,7 +68,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             // 認証成功
-            return Auth::user();
+            $user = $this->auth_service->getAuth();
+            return $user;
         } else {
             // 認証失敗
             return $this->sendFailedLoginResponse($request);
