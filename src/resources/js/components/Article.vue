@@ -11,7 +11,7 @@
       </div>
       <div class="article_info">
         <div class="article_username">{{ article.user.name }}</div>
-        <div class="article_created_at">{{ article.created_at }}</div>
+        <div class="article_updated_at">{{ article.updated_at }}</div>
       </div>
       <div v-show="dotShowFlg" class="article_dot" @click="toggleModal">
         <i class="fas fa-ellipsis-v"></i>

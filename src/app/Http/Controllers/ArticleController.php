@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\ArticleStoreRequest;
 
+use App\Http\Resources\ArticleResource;
+
 use App\Services\ArticleServiceInterface;
 
 class ArticleController extends Controller
@@ -35,7 +37,7 @@ class ArticleController extends Controller
     {
         $articles = $this->article_service->getArticleList();
 
-        return $articles;
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -62,7 +64,7 @@ class ArticleController extends Controller
         // 登録
         $article = $this->article_service->storeArticle($input);
 
-        return $article;
+        return new ArticleResource($article);
     }
 
     /**
@@ -102,7 +104,7 @@ class ArticleController extends Controller
         // 更新
         $article = $this->article_service->updateArticle($id, $input);
 
-        return $article;
+        return new ArticleResource($article);
     }
 
     /**

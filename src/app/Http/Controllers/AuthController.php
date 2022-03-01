@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 
+use App\Http\Resources\UserResource;
+
 use App\Services\AuthServiceInterface;
 
 use App\Models\User;
@@ -53,7 +55,7 @@ class AuthController extends Controller
         // ログイン
         Auth::login($user);
 
-        return $user;
+        return new UserResource($user);
     }
 
     /**
@@ -69,7 +71,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // 認証成功
             $user = $this->auth_service->getAuth();
-            return $user;
+
+            return new UserResource($user);
         } else {
             // 認証失敗
             return $this->sendFailedLoginResponse($request);
@@ -103,7 +106,9 @@ class AuthController extends Controller
     {
         $user = $this->auth_service->getAuth();
 
-        return $user;
+        if (isset($user)) {
+            return new UserResource($user);
+        }
     }
 
     /**

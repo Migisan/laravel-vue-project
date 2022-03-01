@@ -53,7 +53,9 @@ class User extends Authenticatable
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        $datetime_format = config('const.DATETIME_FORMAT');
+
+        return $date->format($datetime_format);
     }
 
     /**
