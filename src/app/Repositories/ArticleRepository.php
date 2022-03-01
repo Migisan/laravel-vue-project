@@ -18,7 +18,7 @@ class ArticleRepository implements ArticleRepositoryInterface
    */
   public function getList(): LengthAwarePaginator
   {
-    return Article::with(['user'])->orderBy('created_at', 'desc')->paginate();
+    return Article::with(['user'])->orderBy('updated_at', 'desc')->paginate();
   }
 
   /**
@@ -29,7 +29,7 @@ class ArticleRepository implements ArticleRepositoryInterface
    */
   public function getListByUser(int $user_id): Collection
   {
-    return Article::with(['user'])->where('user_id', $user_id)->orderBy('created_at', 'desc')->get();
+    return Article::with(['user'])->where('user_id', $user_id)->orderBy('updated_at', 'desc')->get();
   }
 
   /**

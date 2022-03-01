@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\UserUpdateRequest;
 
+use App\Http\Resources\UserResource;
+use App\Http\Resources\ArticleResource;
+
 use App\Services\UserServiceInterface;
 use App\Services\ArticleServiceInterface;
 
@@ -68,9 +71,11 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->user_service->findUser($id);
+        $_user = $this->user_service->findUser($id);
+        $user = new UserResource($_user);
 
-        $articles = $this->article_service->getArticleListByUser($id);
+        $_articles = $this->article_service->getArticleListByUser($id);
+        $articles = ArticleResource::collection($_articles);
 
         return compact('user', 'articles');
     }
@@ -102,7 +107,7 @@ class UserController extends Controller
         // 更新
         $user = $this->user_service->updateUser($id, $input, $file);
 
-        return $user;
+        return new UserResource($user);
     }
 
     /**
