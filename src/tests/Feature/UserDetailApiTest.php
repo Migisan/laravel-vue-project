@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\User;
-use App\Article;
+use App\Models\Article;
+use App\Models\User;
 
 class UserDetailApiTest extends TestCase
 {
@@ -42,7 +42,7 @@ class UserDetailApiTest extends TestCase
         $response->dump();
 
         // 生成した記事データ取得
-        $articles = Article::with(['user'])->orderBy('created_at', 'desc')->get();
+        $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
 
         // 検証
         $response
@@ -52,7 +52,12 @@ class UserDetailApiTest extends TestCase
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'articles' => $articles->toArray(),
+                'articles' => $articles->only([
+                    'id',
+                    'title',
+                    'body',
+                    'updated_at',
+                ])->toArray(),
             ]);
     }
 }

@@ -9368,8 +9368,8 @@ var render = function() {
           _vm._v(_vm._s(_vm.article.user.name))
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "article_created_at" }, [
-          _vm._v(_vm._s(_vm.article.created_at))
+        _c("div", { staticClass: "article_updated_at" }, [
+          _vm._v(_vm._s(_vm.article.updated_at))
         ])
       ]),
       _vm._v(" "),

@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\Article;
-use App\User;
+use App\Models\Article;
+use App\Models\User;
 
 class ArticleListApiTest extends TestCase
 {
@@ -24,7 +24,7 @@ class ArticleListApiTest extends TestCase
         parent::setUp();
 
         // 日付フォーマット
-        $this->dataFormat = 'Y-m-d H:i:s';
+        $this->datetime_format = config('const.DATETIME_FORMAT');
 
         // テストユーザーの作成
         $this->user = factory(User::class)->create();
@@ -44,9 +44,9 @@ class ArticleListApiTest extends TestCase
         // レスポンス
         $response = $this->json('GET', route('articles.index'));
         $response->dump();
-        
+
         // 生成したデータ取得
-        $articles = Article::with(['user'])->orderBy('created_at', 'desc')->get();
+        $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
         $expected_data = $articles->map(function ($article) {
@@ -54,18 +54,13 @@ class ArticleListApiTest extends TestCase
                 'id' => $article->id,
                 'title' => $article->title,
                 'body' => $article->body,
-                'user_id' => $article->user_id,
-                'created_at' => $article->created_at->format($this->dataFormat),
-                'updated_at' => $article->updated_at->format($this->dataFormat),
-                'deleted_at' => null,
+                'updated_at' => $article->updated_at->format($this->datetime_format),
                 'user' => [
                     'id' => $article->user->id,
                     'name' => $article->user->name,
                     'email' => $article->user->email,
                     'image_path' => $article->user->image_path,
-                    'created_at' => $article->user->created_at->format($this->dataFormat),
-                    'updated_at' => $article->user->updated_at->format($this->dataFormat),
-                    'deleted_at' => null,
+                    'updated_at' => $article->user->updated_at->format($this->datetime_format),
                 ]
             ];
         })->all();

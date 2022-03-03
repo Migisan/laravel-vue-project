@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Http\Resources\Json\JsonResource;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,6 +15,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /**
+         * 認証
+         */
+        $this->app->bind(
+            \App\Services\AuthServiceInterface::class,
+            function ($app) {
+                return new \App\Services\AuthService(
+                    $app->make(\App\Repositories\UserRepositoryInterface::class)
+                );
+            },
+        );
+
         /**
          * 記事
          */
@@ -24,11 +38,12 @@ class AppServiceProvider extends ServiceProvider
             \App\Services\ArticleServiceInterface::class,
             function ($app) {
                 return new \App\Services\ArticleService(
+                    $app->make(\App\Repositories\UserRepositoryInterface::class),
                     $app->make(\App\Repositories\ArticleRepositoryInterface::class)
                 );
             },
         );
-        
+
         /**
          * ユーザー
          */
@@ -53,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // dataキーラッピングの無効化
+        JsonResource::withoutWrapping();
     }
 }

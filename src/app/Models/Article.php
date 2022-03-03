@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -61,7 +61,9 @@ class Article extends Model
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        $datetime_format = config('const.DATETIME_FORMAT');
+
+        return $date->format($datetime_format);
     }
 
     /**
@@ -71,6 +73,6 @@ class Article extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo('App\User', 'user_id', 'id', 'users');
+        return $this->belongsTo('App\Models\User', 'user_id', 'id', 'users');
     }
 }

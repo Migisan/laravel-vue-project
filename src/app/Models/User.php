@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,7 +53,9 @@ class User extends Authenticatable
      */
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        $datetime_format = config('const.DATETIME_FORMAT');
+
+        return $date->format($datetime_format);
     }
 
     /**
@@ -63,7 +65,6 @@ class User extends Authenticatable
      */
     public function articles(): HasMany
     {
-        // return $this->hasMany('App\Article')->orderBy('created_at', 'desc');
-        return $this->hasMany('App\Article');
+        return $this->hasMany('App\Models\Article');
     }
 }

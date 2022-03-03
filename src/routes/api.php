@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 /**
- * 認証系
+ * 認証
  */
 // 会員登録
 Route::post('/register', 'AuthController@register')->name('register');
