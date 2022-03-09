@@ -24,10 +24,10 @@ return [
   'before'               => ':attributeには、:dateより前の日付をご利用ください。',
   'before_or_equal'      => ':attributeには、:date以前の日付をご利用ください。',
   'between'              => [
-      'numeric' => ':attributeは、:minから:maxの間で指定してください。',
-      'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
-      'string'  => ':attributeは、:min文字から、:max文字の間で指定してください。',
-      'array'   => ':attributeは、:min個から:max個の間で指定してください。',
+    'numeric' => ':attributeは、:minから:maxの間で指定してください。',
+    'file'    => ':attributeは、:min kBから、:max kBの間で指定してください。',
+    'string'  => ':attributeは、:min文字から、:max文字の間で指定してください。',
+    'array'   => ':attributeは、:min個から:max個の間で指定してください。',
   ],
   'boolean'              => ':attributeは、trueかfalseを指定してください。',
   'confirmed'            => ':attributeと、確認フィールドとが、一致していません。',
@@ -116,6 +116,9 @@ return [
   'uploaded'             => ':attributeのアップロードに失敗しました。',
   'url'                  => ':attributeに正しい形式を指定してください。',
   'uuid'                 => ':attributeに有効なUUIDを指定してください。',
+
+  'hiragana'             => ':attributeはひらがなで入力してください。',
+  'katakana'             => ':attributeはカタカナで入力してください。',
 
   /*
   |--------------------------------------------------------------------------
