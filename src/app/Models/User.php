@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable
 {
     use Notifiable;
+
     // 論理削除
     use SoftDeletes;
 
