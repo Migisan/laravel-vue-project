@@ -7,7 +7,7 @@
       <div class="user_info">
         <div class="user_name">{{ user.name }}</div>
       </div>
-      <div class="user_button">
+      <div v-if="user.id === authid" class="user_button">
         <button>
           <router-link :to="`/user/update/?id=${user.id}`">
             プロフィール更新
@@ -65,6 +65,12 @@ export default {
     };
   },
   computed: {
+    /**
+     * ログイン中のユーザID
+     */
+    authid() {
+      return this.$store.getters["auth/userid"];
+    },
     /**
      * ユーザー
      */
