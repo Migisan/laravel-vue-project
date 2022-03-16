@@ -28532,8 +28532,8 @@ var actions = {
 
               context.commit("setApiStatus", true);
               context.commit("setArticles", response.data.data);
-              context.commit("setCurrentPage", response.data.current_page);
-              context.commit("setLastPage", response.data.last_page);
+              context.commit("setCurrentPage", response.data.meta.current_page);
+              context.commit("setLastPage", response.data.meta.last_page);
               return _context.abrupt("return", false);
 
             case 11:
