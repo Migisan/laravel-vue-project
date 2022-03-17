@@ -1,0 +1,55 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # PHP用のイメージを指定
+      - image: circleci/php:7.3-node-browsers
+
+    steps:
+      # working_directoryにソースコードを配置する
+      # working_directoryはデフォルトでは~/projectに設定されている
+      - checkout
+
+      # 初期設定
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev libjpeg-dev
+      - run: sudo docker-php-ext-configure gd --with-png-dir=/usr/include --with-jpeg-dir=/usr/include
+      - run: sudo docker-php-ext-install zip gd
+
+      # vendor配下のpackageをキャッシュから呼び出す
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "./src/composer.json" }}
+            - v1-dependencies-
+      - run: composer install -n --prefer-dist --working-dir=./src
+      # vendor配下をキャッシュする
+      - save_cache:
+          key: v1-dependencies-{{ checksum "./src/composer.json" }}
+          paths:
+            - ./src/vendor
+
+      # node_modules配下のpackageをキャッシュから呼び出す
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "./src/package.json" }}
+            - node-v1-
+      - run: yarn install --cwd ./src
+      # node_modules配下をキャッシュする
+      - save_cache:
+          key: node-v1-{{ checksum "./src/package.json" }}
+          paths:
+            - ./src/node_modules
+
+      # APP_KEYの生成
+      - run: cp ./src/.env.example ./src/.env.testing
+      - run: cd ./src && php artisan key:generate --env=testing
+
+      # テスト用データベースにsqliteを利用する
+      # - run: touch ./src/storage/testing.sqlite
+      # - run: php ./src/artisan migrate --env=testing --database=sqlite_testing --force
+
+      # phpunitを実行する
+      - run: cd ./src && php artisan test
+      # codeceptionを使う場合はコメントアウトを外す
+#      - run: ./src/vendor/bin/codecept build
+#      - run: ./src/vendor/bin/codecept run
