@@ -7650,6 +7650,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     /**
+     * ログイン中のユーザID
+     */
+    authid: function authid() {
+      return this.$store.getters["auth/userid"];
+    },
+
+    /**
      * ユーザー
      */
     user: function user() {
@@ -10414,19 +10421,21 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "user_button" }, [
-            _c(
-              "button",
-              [
+          _vm.user.id === _vm.authid
+            ? _c("div", { staticClass: "user_button" }, [
                 _c(
-                  "router-link",
-                  { attrs: { to: "/user/update/?id=" + _vm.user.id } },
-                  [_vm._v("\n          プロフィール更新\n        ")]
+                  "button",
+                  [
+                    _c(
+                      "router-link",
+                      { attrs: { to: "/user/update/?id=" + _vm.user.id } },
+                      [_vm._v("\n          プロフィール更新\n        ")]
+                    )
+                  ],
+                  1
                 )
-              ],
-              1
-            )
-          ])
+              ])
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c(
@@ -28523,8 +28532,8 @@ var actions = {
 
               context.commit("setApiStatus", true);
               context.commit("setArticles", response.data.data);
-              context.commit("setCurrentPage", response.data.current_page);
-              context.commit("setLastPage", response.data.last_page);
+              context.commit("setCurrentPage", response.data.meta.current_page);
+              context.commit("setLastPage", response.data.meta.last_page);
               return _context.abrupt("return", false);
 
             case 11:

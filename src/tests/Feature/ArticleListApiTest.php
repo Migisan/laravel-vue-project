@@ -64,7 +64,21 @@ class ArticleListApiTest extends TestCase
                 ]
             ];
         })->all();
-        dump($expected_data);
+        $expected_links = [
+            'first' => url('/api/articles?page=1'),
+            'last' => url('/api/articles?page=1'),
+            'next' => null,
+            'prev' => null,
+        ];
+        $expected_meta = [
+            'current_page' => 1,
+            'from' => 1,
+            'last_page' => 1,
+            'path' => url('/api/articles'),
+            'per_page' => config('const.PER_PAGE'),
+            'to' => 5,
+            'total' => 5,
+        ];
 
         // 検証
         $response->assertStatus(200)
@@ -73,6 +87,12 @@ class ArticleListApiTest extends TestCase
             // レスポンスのdata項目が期待値と一致こと
             ->assertJsonFragment([
                 'data' => $expected_data,
+            ])
+            ->assertJsonFragment([
+                'links' => $expected_links,
+            ])
+            ->assertJsonFragment([
+                'meta' => $expected_meta,
             ]);
     }
 }
