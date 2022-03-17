@@ -342,4 +342,18 @@ or
 # ./vendor/bin/phpunit tests/Feature/SampleTest.php
 ```
 
+### 自動テスト(CircleCI)
+
+テストが成功した場合のみ master ブランチに merge できるように保護する
+
+- Settings > Branches > Branch protection rules > Add rule をクリック
+- Branch name pattern : master
+- Require status checks to pass before merging : check
+- Require branches to be up to date before merging : check
+
+また、管理者にもルールを適用する場合には下記項目もチェックする
+※管理者も master に直接 push できなくなるので注意する
+
+- Include administrators : check
+
 ## その他
