@@ -360,4 +360,6 @@ circleci local execute
 
 - Include administrators : check
 
-## その他
+## ER 図(データベース設計)
+
+![](document/er.drawio.svg)
