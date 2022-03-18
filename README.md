@@ -53,10 +53,10 @@ docker ps
 
 ```
 docker-compose exec --user=laradock workspace bash
-# composer install
-# npm install
-# npm run dev
-# exit
+$ composer install
+$ npm install
+$ npm run dev
+$ exit
 ```
 
 ### Laravel の設定ファイルの編集
@@ -90,10 +90,10 @@ MAIL_FROM_ADDRESS=送信者のメールアドレス
 
 ```
 docker-compose exec --user=laradock workspace bash
-# php artisan key:generate
-# php artisan migrate
-# php artisan db:seed
-# exit
+$ php artisan key:generate
+$ php artisan migrate
+$ php artisan db:seed
+$ exit
 ```
 
 ### ブラウザで確認
@@ -123,16 +123,16 @@ MySQL の使用
 
 ```
 docker-compose exec mysql bash
-# mysql -u laradock/.envのMYSQL_USER -p
-# laradock/.envのMYSQL_PASSWORD
+$ mysql -u laradock/.envのMYSQL_USER -p
+$ laradock/.envのMYSQL_PASSWORD
 ```
 
 フロントエンドのビルド
 
 ```
-# npm run dev
+$ npm run dev
 or
-# npm run watch
+$ npm run watch
 ```
 
 ## アーキテクチャ
@@ -168,8 +168,6 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 ビジネスロジックを処理する。コントローラーから呼び出される。<br>
 また、リポジトリを呼び出すことができる。<br>
 コンストラクタインジェクションで依存性の注入を行う。<br>
-また、インターフェースを継承すること。<br>
-※インターフェースで DI を行う場合には、サービスプロバイダへの登録が必要。
 
 ### リポジトリ
 
@@ -202,31 +200,31 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 テーブル作成のマイグレーション
 
 ```
-# php artisan make:migration create_samples_table
+$ php artisan make:migration create_samples_table
 ```
 
 マイグレーションの実行
 
 ```
-# php artisan migrate
+$ php artisan migrate
 ```
 
 マイグレーションの状態確認
 
 ```
-# php artisan migrate:status
+$ php artisan migrate:status
 ```
 
 ロールバックの実行
 
 ```
-# php artisan migrate:rollback
+$ php artisan migrate:rollback
 ```
 
 リフレッシュ(ロールバックとマイグレーション)と全シードの実行
 
 ```
-# php artisan migrate:refresh --seed
+$ php artisan migrate:refresh --seed
 ```
 
 ### シーダー(初期データ)
@@ -234,20 +232,20 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 シーダーの作成
 
 ```
-# php artisan make:seeder SampleSeeder
+$ php artisan make:seeder SampleSeeder
 ```
 
 シーダーの実行
 
 ```
 // オートローダーの再生成
-# composer dump-autoload
+$ composer dump-autoload
 
 // 全シーダー
-# php artisan db:seeder
+$ php artisan db:seeder
 
 // 個別シーダー
-# php artisan db:seeder --class=SampleSeeder
+$ php artisan db:seeder --class=SampleSeeder
 ```
 
 ### モデル
@@ -255,7 +253,7 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 モデルの作成
 
 ```
-# php artisan make:model Sample
+$ php artisan make:model Sample
 ```
 
 ### コントローラー
@@ -263,13 +261,13 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 コントローラーの作成
 
 ```
-# php artisan make:controller SampleController
+$ php artisan make:controller SampleController
 ```
 
 リソースコントローラーの作成
 
 ```
-# php artisan make:controller SampleController --resource
+$ php artisan make:controller SampleController --resource
 ```
 
 ### フォームリクエスト(バリデーション)
@@ -277,7 +275,7 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 フォームリクエストの作成
 
 ```
-# php artisan make:request SampleRequest
+$ php artisan make:request SampleRequest
 ```
 
 ### API リソース(レスポンス)
@@ -285,7 +283,7 @@ API のレスポンスとして、モデルやモデルコレクションを元�
 API リソースの作成
 
 ```
-# php artisan make:resource SampleResource
+$ php artisan make:resource SampleResource
 ```
 
 ### ルーティング
@@ -293,7 +291,7 @@ API リソースの作成
 ルーティングの確認
 
 ```
-# php artisan route:list
+$ php artisan route:list
 ```
 
 ### ビュー
@@ -301,7 +299,7 @@ API リソースの作成
 シンボリックリンクを張る
 
 ```
-# php artisan storage:link
+$ php artisan storage:link
 ```
 
 ## テスト
@@ -311,7 +309,7 @@ API リソースの作成
 ファクトリーの作成
 
 ```
-# php artisan make:factory SampleFactory
+$ php artisan make:factory SampleFactory
 ```
 
 ### テストの作成
@@ -319,7 +317,7 @@ API リソースの作成
 テストクラスの作成
 
 ```
-# php artisan make:test SampleApiTest
+$ php artisan make:test SampleApiTest
 ```
 
 テスト後のデータベースのリセット
@@ -332,17 +330,23 @@ use RefreshDatabase;
 
 ```
 // 全テスト
-# php artisan test
+$ php artisan test
 or
-# ./vendor/bin/phpunit --testdox
+$ ./vendor/bin/phpunit --testdox
 
 // 個別テスト
-# php artisan test tests/Feature/SampleTest.php
+$ php artisan test tests/Feature/SampleTest.php
 or
-# ./vendor/bin/phpunit tests/Feature/SampleTest.php
+$ ./vendor/bin/phpunit tests/Feature/SampleTest.php
 ```
 
 ### 自動テスト(CircleCI)
+
+ローカルでの実行
+
+```
+circleci local execute
+```
 
 テストが成功した場合のみ master ブランチに merge できるように保護する
 
@@ -351,7 +355,7 @@ or
 - Require status checks to pass before merging : check
 - Require branches to be up to date before merging : check
 
-また、管理者にもルールを適用する場合には下記項目もチェックする
+また、管理者にもルールを適用する場合には下記項目もチェックする<br>
 ※管理者も master に直接 push できなくなるので注意する
 
 - Include administrators : check
