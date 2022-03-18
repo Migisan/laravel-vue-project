@@ -1,6 +1,7 @@
 import Vue from "vue";
 import router from "./router";
 import store from "./store";
+import vuetify from "./vuetify";
 import "./bootstrap";
 import "./fontawesome";
 
@@ -14,6 +15,7 @@ const createApp = async () => {
     el: "#app",
     router,
     store,
+    // vuetify,
     components: { App },
     template: "<App />"
   });
