@@ -15,6 +15,10 @@ class UserUpdateApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $file;
+    private $datetime_format;
+
     /**
      * テスト前処理
      *
@@ -24,8 +28,14 @@ class UserUpdateApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
+
+        // 画像ファイルの生成
+        $this->file = UploadedFile::fake()->image('test.jpg');
+
+        // 日時フォーマット
+        $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
     /**
@@ -34,16 +44,13 @@ class UserUpdateApiTest extends TestCase
      * @test
      * @return void
      */
-    public function updateUser()
+    public function updateUser(): void
     {
-        // 画像ファイルの生成
-        $file = UploadedFile::fake()->image('test.jpg');
-
         // データ
         $data = [
             'name' => 'update user',
             'email' => 'update_user@example.com',
-            'image' => $file,
+            'image' => $this->file,
         ];
 
         // レスポンス
@@ -52,15 +59,33 @@ class UserUpdateApiTest extends TestCase
         $response->dump();
 
         // 更新したデータ取得
-        $after_user = User::find($this->user->id);
+        $user = User::find($this->user->id);
+
+        // 期待値
+        $expected_structure = [
+            'id',
+            'name',
+            'email',
+            'image_path',
+            'updated_at',
+        ];
+        $expected = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'image_path' => $user->image_path,
+            'updated_at' => $user->updated_at->format($this->datetime_format),
+        ];
 
         // 検証
-        $response->assertStatus(200);
-        $this->assertEquals($after_user->name, $data['name']);
-        $this->assertEquals($after_user->email, $data['email']);
-        Storage::disk('public')->assertExists('/user/' . $file->hashName());
+        $response->assertStatus(200)
+            ->assertJsonStructure($expected_structure)
+            ->assertExactJson($expected);
+        $this->assertSame($user->name, $data['name']);
+        $this->assertSame($user->email, $data['email']);
+        Storage::disk('public')->assertExists('/user/' . $this->file->hashName());
 
         // 画像ファイルの削除
-        Storage::disk('public')->delete('/user/' . $file->hashName());
+        Storage::disk('public')->delete('/user/' . $this->file->hashName());
     }
 }

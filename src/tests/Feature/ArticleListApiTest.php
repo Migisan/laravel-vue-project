@@ -14,6 +14,10 @@ class ArticleListApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $data_count;
+    private $datetime_format;
+
     /**
      * テスト前処理
      *
@@ -23,11 +27,16 @@ class ArticleListApiTest extends TestCase
     {
         parent::setUp();
 
-        // 日付フォーマット
-        $this->datetime_format = config('const.DATETIME_FORMAT');
-
         // テストユーザーの作成
         $this->user = factory(User::class)->create();
+
+        $this->data_count = 5;
+
+        // 記事データ生成
+        factory(Article::class, $this->data_count)->create();
+
+        // 日時フォーマット
+        $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
     /**
@@ -36,19 +45,49 @@ class ArticleListApiTest extends TestCase
      * @test
      * @return void
      */
-    public function returnArticleListJson()
+    public function returnArticleListJson(): void
     {
-        // 記事データ生成
-        factory(Article::class, 5)->create();
-
         // レスポンス
         $response = $this->json('GET', route('articles.index'));
         $response->dump();
 
-        // 生成したデータ取得
+        // データ取得
         $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
+        $expected_data_count = $this->data_count;
+        $expected_structure = [
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'body',
+                    'updated_at',
+                    'user' => [
+                        'id',
+                        'name',
+                        'email',
+                        'image_path',
+                        'updated_at',
+                    ],
+                ],
+            ],
+            'links' => [
+                'first',
+                'last',
+                'next',
+                'prev',
+            ],
+            'meta' => [
+                'current_page',
+                'from',
+                'last_page',
+                'path',
+                'per_page',
+                'to',
+                'total',
+            ],
+        ];
         $expected_data = $articles->map(function ($article) {
             return [
                 'id' => $article->id,
@@ -61,7 +100,7 @@ class ArticleListApiTest extends TestCase
                     'email' => $article->user->email,
                     'image_path' => $article->user->image_path,
                     'updated_at' => $article->user->updated_at->format($this->datetime_format),
-                ]
+                ],
             ];
         })->all();
         $expected_links = [
@@ -83,15 +122,13 @@ class ArticleListApiTest extends TestCase
         // 検証
         $response->assertStatus(200)
             // レスポンスのdata項目に含まれる要素が5つであること
-            ->assertJsonCount(5, 'data')
-            // レスポンスのdata項目が期待値と一致こと
-            ->assertJsonFragment([
+            ->assertJsonCount($expected_data_count, 'data')
+            // レスポンスのデータ構造が期待値と一致すること
+            ->assertJsonStructure($expected_structure)
+            // レスポンスが期待値と完全一致すること
+            ->assertExactJson([
                 'data' => $expected_data,
-            ])
-            ->assertJsonFragment([
                 'links' => $expected_links,
-            ])
-            ->assertJsonFragment([
                 'meta' => $expected_meta,
             ]);
     }

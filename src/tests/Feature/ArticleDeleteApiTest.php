@@ -14,6 +14,9 @@ class ArticleDeleteApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $article;
+
     /**
      * テスト前処理
      *
@@ -23,8 +26,11 @@ class ArticleDeleteApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
+
+        // 記事データ生成
+        $this->article = factory(Article::class)->create();
     }
 
     /**
@@ -33,14 +39,11 @@ class ArticleDeleteApiTest extends TestCase
      * @test
      * @return void
      */
-    public function deleteArticle()
+    public function deleteArticle(): void
     {
-        // 記事データ生成
-        $article = factory(Article::class)->create();
-
         // レスポンス
         $response = $this->actingAs($this->user)
-            ->deleteJson(route('articles.destroy', $article->id));
+            ->deleteJson(route('articles.destroy', $this->article->id));
         dump($response);
 
         // 検証

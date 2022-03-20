@@ -13,6 +13,8 @@ class LogoutApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+
     /**
      * テスト前処理
      *
@@ -22,7 +24,7 @@ class LogoutApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
     }
 
@@ -32,7 +34,7 @@ class LogoutApiTest extends TestCase
      * @test
      * @return void
      */
-    public function logoutAuthenticatedUser()
+    public function logoutAuthenticatedUser(): void
     {
         // レスポンス
         $response = $this->actingAs($this->user)->json('POST', route('logout'));
