@@ -16,6 +16,7 @@ class ArticleUpdateApiTest extends TestCase
 
     private $user;
     private $article;
+    private $datetime_format;
 
     /**
      * テスト前処理
@@ -31,6 +32,9 @@ class ArticleUpdateApiTest extends TestCase
 
         // 記事データ生成
         $this->article = factory(Article::class)->create();
+
+        // 日時フォーマット
+        $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
     /**
@@ -53,11 +57,41 @@ class ArticleUpdateApiTest extends TestCase
         $response->dump();
 
         // 更新したデータ取得
-        $after_article = Article::find($this->article->id);
+        $article = Article::find($this->article->id);
+
+        // 期待値
+        $expected_structure = [
+            'id',
+            'title',
+            'body',
+            'updated_at',
+            'user' => [
+                'id',
+                'name',
+                'email',
+                'image_path',
+                'updated_at',
+            ],
+        ];
+        $expected_data = [
+            'id' => $article->id,
+            'title' => $article->title,
+            'body' => $article->body,
+            'updated_at' => $article->updated_at->format($this->datetime_format),
+            'user' => [
+                'id' => $article->user->id,
+                'name' => $article->user->name,
+                'email' => $article->user->email,
+                'image_path' => $article->user->image_path,
+                'updated_at' => $article->user->updated_at->format($this->datetime_format),
+            ],
+        ];
 
         // 検証
-        $response->assertStatus(200);
-        $this->assertEquals($after_article->title, $data['title']);
-        $this->assertEquals($after_article->body, $data['body']);
+        $response->assertStatus(200)
+            ->assertJsonStructure($expected_structure)
+            ->assertExactJson($expected_data);
+        $this->assertEquals($article->title, $data['title']);
+        $this->assertEquals($article->body, $data['body']);
     }
 }
