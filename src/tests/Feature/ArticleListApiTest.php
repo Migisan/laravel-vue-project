@@ -14,6 +14,10 @@ class ArticleListApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $data_count;
+    private $datetime_format;
+
     /**
      * テスト前処理
      *
@@ -23,11 +27,16 @@ class ArticleListApiTest extends TestCase
     {
         parent::setUp();
 
-        // 日付フォーマット
-        $this->datetime_format = config('const.DATETIME_FORMAT');
-
         // テストユーザーの作成
         $this->user = factory(User::class)->create();
+
+        $this->data_count = 5;
+
+        // 記事データ生成
+        factory(Article::class, $this->data_count)->create();
+
+        // 日付フォーマット
+        $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
     /**
@@ -38,19 +47,15 @@ class ArticleListApiTest extends TestCase
      */
     public function returnArticleListJson()
     {
-        // 記事データ生成
-        $data_count = 5;
-        factory(Article::class, $data_count)->create();
-
         // レスポンス
         $response = $this->json('GET', route('articles.index'));
         $response->dump();
 
-        // 生成したデータ取得
+        // データ取得
         $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
-        $expected_data_count = $data_count;
+        $expected_data_count = $this->data_count;
         $expected_structure = [
             'data' => [
                 '*' => [
