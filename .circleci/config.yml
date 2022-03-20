@@ -50,6 +50,8 @@ jobs:
 
       # phpunitを実行する
       - run: cd ./src && php artisan test
+      # jestを実行する
+      - run: yarn --cwd ./src test
       # codeceptionを使う場合はコメントアウトを外す
 #      - run: ./src/vendor/bin/codecept build
 #      - run: ./src/vendor/bin/codecept run
