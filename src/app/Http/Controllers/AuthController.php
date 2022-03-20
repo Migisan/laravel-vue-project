@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 
 use App\Services\AuthServiceInterface;
+
+use App\Mail\RegisterMail;
 
 use App\Models\User;
 
@@ -51,6 +54,9 @@ class AuthController extends Controller
         $input['image_path'] = '/storage/user/' . basename($path);
         $input['password'] = Hash::make($input['password']);
         $user->fill($input)->save();
+
+        // メール送信
+        Mail::send(new RegisterMail($user->name, $user->email));
 
         // ログイン
         Auth::login($user);
