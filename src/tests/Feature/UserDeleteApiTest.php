@@ -13,6 +13,8 @@ class UserDeleteApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+
     /**
      * テスト前処理
      *
@@ -22,7 +24,7 @@ class UserDeleteApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
     }
 
@@ -41,6 +43,6 @@ class UserDeleteApiTest extends TestCase
 
         // 検証
         $response->assertStatus(200);
-        $this->assertEquals(0, User::count());
+        $this->assertSame(0, User::count());
     }
 }
