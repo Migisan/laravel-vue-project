@@ -14,6 +14,9 @@ class ArticleUpdateApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $article;
+
     /**
      * テスト前処理
      *
@@ -23,8 +26,11 @@ class ArticleUpdateApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
+
+        // 記事データ生成
+        $this->article = factory(Article::class)->create();
     }
 
     /**
@@ -35,9 +41,6 @@ class ArticleUpdateApiTest extends TestCase
      */
     public function updateArticle()
     {
-        // 記事データ生成
-        $before_article = factory(Article::class)->create();
-
         // データ
         $data = [
             'title' => 'テストタイトル',
@@ -46,11 +49,11 @@ class ArticleUpdateApiTest extends TestCase
 
         // レスポンス
         $response = $this->actingAs($this->user)
-            ->patchJson(route('articles.update', $before_article->id), $data);
+            ->patchJson(route('articles.update', $this->article->id), $data);
         $response->dump();
 
         // 更新したデータ取得
-        $after_article = Article::find($before_article->id);
+        $after_article = Article::find($this->article->id);
 
         // 検証
         $response->assertStatus(200);
