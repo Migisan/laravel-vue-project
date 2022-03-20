@@ -13,6 +13,9 @@ class LoginUserApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user;
+    private $datetime_format;
+
     /**
      * テスト前処理
      *
@@ -22,8 +25,11 @@ class LoginUserApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
+        // テストユーザー生成
         $this->user = factory(User::class)->create();
+
+        // 日時フォーマット
+        $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
     /**
@@ -37,12 +43,27 @@ class LoginUserApiTest extends TestCase
         // レスポンス
         $response = $this->actingAs($this->user)->json('GET', route('login_user'));
         $response->dump();
-        // dump(User::find($this->user->id));
+
+        // 期待値
+        $expected_structure = [
+            'id',
+            'name',
+            'email',
+            'image_path',
+            'updated_at',
+        ];
+        $expected = [
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'image_path' => $this->user->image_path,
+            'updated_at' => $this->user->updated_at->format($this->datetime_format),
+        ];
 
         // 検証
-        $response->assertStatus(200)->assertJson([
-            'name' => $this->user->name,
-        ]);
+        $response->assertStatus(200)
+            ->assertJsonStructure($expected_structure)
+            ->assertExactJson($expected);
     }
 
     /**
@@ -59,6 +80,6 @@ class LoginUserApiTest extends TestCase
 
         // 検証
         $response->assertStatus(200);
-        $this->assertEquals("", $response->content());
+        $this->assertSame("", $response->content());
     }
 }
