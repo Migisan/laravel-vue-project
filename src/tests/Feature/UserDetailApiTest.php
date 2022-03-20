@@ -37,7 +37,7 @@ class UserDetailApiTest extends TestCase
             ]);
         }
 
-        // 日付フォーマット
+        // 日時フォーマット
         $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 

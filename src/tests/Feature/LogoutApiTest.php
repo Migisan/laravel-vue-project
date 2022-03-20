@@ -34,7 +34,7 @@ class LogoutApiTest extends TestCase
      * @test
      * @return void
      */
-    public function logoutAuthenticatedUser()
+    public function logoutAuthenticatedUser(): void
     {
         // レスポンス
         $response = $this->actingAs($this->user)->json('POST', route('logout'));

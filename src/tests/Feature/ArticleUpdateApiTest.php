@@ -43,7 +43,7 @@ class ArticleUpdateApiTest extends TestCase
      * @test
      * @return void
      */
-    public function updateArticle()
+    public function updateArticle(): void
     {
         // データ
         $data = [

@@ -40,7 +40,7 @@ class ArticleStoreApiTest extends TestCase
      * @test
      * @return void
      */
-    public function createArticle()
+    public function createArticle(): void
     {
         // データ
         $data = [

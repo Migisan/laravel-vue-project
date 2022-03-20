@@ -39,7 +39,7 @@ class ArticleDeleteApiTest extends TestCase
      * @test
      * @return void
      */
-    public function deleteArticle()
+    public function deleteArticle(): void
     {
         // レスポンス
         $response = $this->actingAs($this->user)

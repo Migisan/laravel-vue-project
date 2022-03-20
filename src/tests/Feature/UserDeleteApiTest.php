@@ -34,7 +34,7 @@ class UserDeleteApiTest extends TestCase
      * @test
      * @return void
      */
-    public function deleteUser()
+    public function deleteUser(): void
     {
         // レスポンス
         $response = $this->actingAs($this->user)

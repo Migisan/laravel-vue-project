@@ -35,7 +35,7 @@ class ArticleListApiTest extends TestCase
         // 記事データ生成
         factory(Article::class, $this->data_count)->create();
 
-        // 日付フォーマット
+        // 日時フォーマット
         $this->datetime_format = config('const.DATETIME_FORMAT');
     }
 
@@ -45,7 +45,7 @@ class ArticleListApiTest extends TestCase
      * @test
      * @return void
      */
-    public function returnArticleListJson()
+    public function returnArticleListJson(): void
     {
         // レスポンス
         $response = $this->json('GET', route('articles.index'));

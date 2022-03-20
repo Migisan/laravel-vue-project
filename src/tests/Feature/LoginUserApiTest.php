@@ -38,7 +38,7 @@ class LoginUserApiTest extends TestCase
      * @test
      * @return void
      */
-    public function getLoginUser()
+    public function getLoginUser(): void
     {
         // レスポンス
         $response = $this->actingAs($this->user)->json('GET', route('login_user'));
@@ -72,7 +72,7 @@ class LoginUserApiTest extends TestCase
      * @test
      * @return void
      */
-    public function getNotLoginUser()
+    public function getNotLoginUser(): void
     {
         // レスポンス
         $response = $this->json('GET', route('login_user'));
