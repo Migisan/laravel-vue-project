@@ -39,7 +39,8 @@ class ArticleListApiTest extends TestCase
     public function returnArticleListJson()
     {
         // 記事データ生成
-        factory(Article::class, 5)->create();
+        $data_count = 5;
+        factory(Article::class, $data_count)->create();
 
         // レスポンス
         $response = $this->json('GET', route('articles.index'));
@@ -49,6 +50,39 @@ class ArticleListApiTest extends TestCase
         $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
+        $expected_data_count = $data_count;
+        $expected_structure = [
+            'data' => [
+                '*' => [
+                    'id',
+                    'title',
+                    'body',
+                    'updated_at',
+                    'user' => [
+                        'id',
+                        'name',
+                        'email',
+                        'image_path',
+                        'updated_at',
+                    ],
+                ],
+            ],
+            'links' => [
+                'first',
+                'last',
+                'next',
+                'prev',
+            ],
+            'meta' => [
+                'current_page',
+                'from',
+                'last_page',
+                'path',
+                'per_page',
+                'to',
+                'total',
+            ],
+        ];
         $expected_data = $articles->map(function ($article) {
             return [
                 'id' => $article->id,
@@ -61,7 +95,7 @@ class ArticleListApiTest extends TestCase
                     'email' => $article->user->email,
                     'image_path' => $article->user->image_path,
                     'updated_at' => $article->user->updated_at->format($this->datetime_format),
-                ]
+                ],
             ];
         })->all();
         $expected_links = [
@@ -83,15 +117,13 @@ class ArticleListApiTest extends TestCase
         // 検証
         $response->assertStatus(200)
             // レスポンスのdata項目に含まれる要素が5つであること
-            ->assertJsonCount(5, 'data')
-            // レスポンスのdata項目が期待値と一致こと
-            ->assertJsonFragment([
+            ->assertJsonCount($expected_data_count, 'data')
+            // レスポンスのデータ構造が期待値と一致すること
+            ->assertJsonStructure($expected_structure)
+            // レスポンスが期待値と完全一致すること
+            ->assertExactJson([
                 'data' => $expected_data,
-            ])
-            ->assertJsonFragment([
                 'links' => $expected_links,
-            ])
-            ->assertJsonFragment([
                 'meta' => $expected_meta,
             ]);
     }
