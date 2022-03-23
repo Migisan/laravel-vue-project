@@ -33,7 +33,7 @@ class RegisterMail extends Mailable
     public function build()
     {
         return $this->to($this->email)
-            ->subject('テストタイトル')
+            ->subject('会員登録完了のお知らせ')
             ->view('mail.register')
             ->with([
                 'name' => $this->name,
