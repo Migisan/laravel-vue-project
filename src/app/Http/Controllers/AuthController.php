@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
-
 use App\Http\Resources\UserResource;
+
+use App\Jobs\SendRegisterMailJob;
 
 use App\Services\AuthServiceInterface;
 
@@ -43,19 +45,31 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $user = new User();
-
-        // 登録
+        // リクエスト
         $input = $request->only(['name', 'email', 'password']);
         $path = $request->file('image')->store('public/user');
         $input['image_path'] = '/storage/user/' . basename($path);
         $input['password'] = Hash::make($input['password']);
-        $user->fill($input)->save();
 
-        // ログイン
-        Auth::login($user);
+        DB::beginTransaction();
+        try {
+            // 登録
+            $user = new User();
+            $user->fill($input)->save();
 
-        return new UserResource($user);
+            // メール送信
+            SendRegisterMailJob::dispatch($user->name, $user->email);
+
+            // ログイン
+            Auth::login($user);
+
+            DB::commit();
+
+            return new UserResource($user);
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**

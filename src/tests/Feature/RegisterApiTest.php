@@ -2,13 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Jobs\SendRegisterMailJob;
+use App\Mail\RegisterMail;
 use Tests\TestCase;
 
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+
+use Illuminate\Http\UploadedFile;
+
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterApiTest extends TestCase
 {
@@ -42,6 +49,8 @@ class RegisterApiTest extends TestCase
      */
     public function createAndReturnNewUser(): void
     {
+        Queue::fake();
+
         // データ
         $data = [
             'name' => 'new user',
@@ -78,9 +87,15 @@ class RegisterApiTest extends TestCase
         $response->assertStatus(201)
             ->assertJsonStructure($expected_structure)
             ->assertExactJson($expected);
+
         $this->assertSame($data['name'], $user->name);
         $this->assertSame($data['email'], $user->email);
+
         Storage::disk('public')->assertExists('/user/' . $this->file->hashName());
+
+        Queue::assertPushed(SendRegisterMailJob::class, 1);
+
+        $this->assertAuthenticatedAs($user);
 
         // 画像ファイルの削除
         Storage::disk('public')->delete('/user/' . $this->file->hashName());
