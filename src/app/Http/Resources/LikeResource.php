@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ArticleResource extends JsonResource
+class LikeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +17,9 @@ class ArticleResource extends JsonResource
         $datetime_format = config('const.DATETIME_FORMAT');
 
         return [
-            'id'          => $this->id,
-            'title'       => $this->title,
-            'body'        => $this->body,
-            'updated_at'  => $this->updated_at->format($datetime_format),
-            'user'        => new UserResource($this->user),
-            'likes_count' => $this->likes->count(),
+            'article_id' => $this->article_id,
+            'user_id'    => $this->user_id,
+            'created_at' => $this->created_at->format($datetime_format),
         ];
     }
 }

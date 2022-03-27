@@ -18,7 +18,7 @@ class ArticleRepository implements ArticleRepositoryInterface
    */
   public function getList(): LengthAwarePaginator
   {
-    return Article::with(['user'])->orderBy('updated_at', 'desc')->paginate();
+    return Article::with(['user', 'likes'])->orderBy('updated_at', 'desc')->paginate();
   }
 
   /**

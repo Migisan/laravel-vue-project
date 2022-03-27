@@ -76,10 +76,10 @@ class User extends Authenticatable
     /**
      * likesテーブル リレーション
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->BelongsTo('App\Models\Article', 'likes');
+        return $this->BelongsToMany('App\Models\Article', 'likes');
     }
 }

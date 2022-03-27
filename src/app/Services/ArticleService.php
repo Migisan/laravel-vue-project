@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-
 use App\Services\ArticleServiceInterface;
 
 use App\Repositories\ArticleRepositoryInterface;
@@ -27,9 +24,9 @@ class ArticleService implements ArticleServiceInterface
   /**
    * 記事一覧を取得
    * 
-   * @return LengthAwarePaginator
+   * @return \Illuminate\Pagination\LengthAwarePaginator
    */
-  public function getArticleList(): LengthAwarePaginator
+  public function getArticleList(): \Illuminate\Pagination\LengthAwarePaginator
   {
     $articles = $this->article_repository->getList();
 
@@ -40,9 +37,9 @@ class ArticleService implements ArticleServiceInterface
    * ユーザーの記事一覧を取得
    * 
    * @param int $user_id
-   * @return Collection
+   * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function getArticleListByUser(int $user_id): Collection
+  public function getArticleListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection
   {
     $articles = $this->article_repository->getListByUser($user_id);
 

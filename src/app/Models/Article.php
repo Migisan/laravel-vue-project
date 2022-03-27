@@ -48,10 +48,10 @@ class Article extends BaseModel
     /**
      * likesテーブル リレーション
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->BelongsTo('App\Models\User', 'likes');
+        return $this->BelongsToMany('App\Models\User', 'likes');
     }
 }
