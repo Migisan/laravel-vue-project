@@ -80,6 +80,11 @@
       }
     }
   }
+  &_likes {
+    .fa-heart {
+      cursor: pointer;
+    }
+  }
 }
 
 .article_form {

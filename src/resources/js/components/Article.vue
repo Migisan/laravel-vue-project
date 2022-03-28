@@ -21,8 +21,15 @@
         <li @click="deleteArticle">削除</li>
       </ul>
     </div>
-    <h2>{{ article.title }}</h2>
-    <p>{{ article.body }}</p>
+    <h2 class="article_title">{{ article.title }}</h2>
+    <p class="article_body">{{ article.body }}</p>
+    <div class="article_detail">
+      <div class="article_likes">
+        <!-- <i class="fas fa-heart"></i> -->
+        <i class="far fa-heart"></i>
+        {{ article.likes_count }}いいね
+      </div>
+    </div>
   </li>
 </template>
 

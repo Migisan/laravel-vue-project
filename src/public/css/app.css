@@ -325,6 +325,10 @@ img {
   border-bottom: 1px solid #bbbbbb;
 }
 
+.article_likes .fa-heart {
+  cursor: pointer;
+}
+
 .article_form {
   position: absolute;
   top: 0;
