@@ -37,6 +37,7 @@ Route::get('/reflesh_token', 'AuthController@reflesh_token')->name('reflesh_toke
  */
 Route::resource('articles', 'ArticleController')->except(['create', 'show', 'edit']);
 Route::post('articles/{article}/add_like', 'ArticleController@addLike')->name('articles.addLike');
+Route::post('articles/{article}/delete_like', 'ArticleController@deleteLike')->name('articles.deleteLike');
 
 /**
  * ユーザー

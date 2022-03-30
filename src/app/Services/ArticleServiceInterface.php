@@ -51,4 +51,12 @@ interface ArticleServiceInterface
    * @return void
    */
   public function addLikeToArticle(int $id): void;
+
+  /**
+   * いいねを外す
+   * 
+   * @param int $id
+   * @return void
+   */
+  public function deleteLikeToArticle(int $id): void;
 }

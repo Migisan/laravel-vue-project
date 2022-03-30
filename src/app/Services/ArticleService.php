@@ -115,4 +115,21 @@ class ArticleService implements ArticleServiceInterface
 
     $this->like_repository->insert($params);
   }
+
+  /**
+   * いいねを外す
+   * 
+   * @param int $id
+   * @return void
+   */
+  public function deleteLikeToArticle(int $id): void
+  {
+    // ログイン中ユーザー
+    $auth = $this->user_repository->getAuth();
+
+    $article_id = $id;
+    $user_id = $auth->id;
+
+    $this->like_repository->delete($article_id, $user_id);
+  }
 }
