@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Exception;
+
 use App\Models\Like;
 
 class LikeRepository implements LikeRepositoryInterface
@@ -33,6 +35,10 @@ class LikeRepository implements LikeRepositoryInterface
     $like = Like::where('article_id', $article_id)
       ->where('user_id', $user_id)
       ->first();
+
+    if (!isset($like)) {
+      throw new Exception('この記事に対するいいねはありません。');
+    }
 
     $like->delete();
   }

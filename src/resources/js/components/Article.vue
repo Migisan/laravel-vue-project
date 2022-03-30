@@ -25,9 +25,11 @@
     <p class="article_body">{{ article.body }}</p>
     <div class="article_detail">
       <div class="article_likes">
-        <!-- <i class="fas fa-heart"></i> -->
-        <span class="heart" @click="addLike">
-          <i class="far fa-heart"></i>
+        <span v-if="isLike" class="heart" @click="deleteLike" key="like">
+          <i class="fas fa-heart like"></i>
+        </span>
+        <span v-else class="heart" @click="addLike" key="not-like">
+          <i class="far fa-heart not-like"></i>
         </span>
         {{ article.likes_count }}いいね
       </div>
@@ -46,7 +48,8 @@ export default {
   data() {
     return {
       dotShowFlg: false,
-      modalShowFlg: false
+      modalShowFlg: false,
+      isLike: false
     };
   },
   computed: {
@@ -98,7 +101,17 @@ export default {
     /**
      * いいねをつける
      */
-    addLike() {}
+    async addLike() {
+      await this.$store.dispatch("article/addLike", this.article.id);
+      this.isLike = true;
+    },
+    /**
+     * いいねを外す
+     */
+    async deleteLike() {
+      await this.$store.dispatch("article/deleteLike", this.article.id);
+      this.isLike = false;
+    }
   }
 };
 </script>

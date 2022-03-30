@@ -180,6 +180,50 @@ const actions = {
     // 失敗
     context.commit("setApiStatus", false);
     context.commit("error/setCode", response.status, { root: true });
+  },
+  /**
+   * いいねつけるアクション
+   *
+   * @param {*} context
+   * @param {*} id
+   */
+  async addLike(context, id) {
+    // API実行
+    context.commit("setApiStatus", null);
+    const response = await axios.post(`/api/articles/${id}/add_like`);
+    console.log(response);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
+  },
+  /**
+   * いいね外すアクション
+   *
+   * @param {*} context
+   * @param {*} id
+   */
+  async deleteLike(context, id) {
+    // API実行
+    context.commit("setApiStatus", null);
+    const response = await axios.post(`/api/articles/${id}/delete_like`);
+    console.log(response);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
   }
 };
 

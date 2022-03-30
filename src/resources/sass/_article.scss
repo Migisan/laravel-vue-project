@@ -81,8 +81,11 @@
     }
   }
   &_likes {
-    .fa-heart {
+    .heart {
       cursor: pointer;
+      .like {
+        color: $red;
+      }
     }
   }
 }

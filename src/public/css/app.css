@@ -325,8 +325,12 @@ img {
   border-bottom: 1px solid #bbbbbb;
 }
 
-.article_likes .fa-heart {
+.article_likes .heart {
   cursor: pointer;
+}
+
+.article_likes .heart .like {
+  color: #e3342f;
 }
 
 .article_form {
