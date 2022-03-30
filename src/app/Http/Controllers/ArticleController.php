@@ -118,4 +118,15 @@ class ArticleController extends Controller
         // 削除
         $this->article_service->deleteArticle($id);
     }
+
+    /**
+     * いいねつける処理
+     * 
+     * @param int $id
+     */
+    public function addLike(int $id)
+    {
+        // いいねをつける
+        $this->article_service->addLikeToArticle($id);
+    }
 }

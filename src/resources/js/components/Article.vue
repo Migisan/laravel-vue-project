@@ -26,7 +26,9 @@
     <div class="article_detail">
       <div class="article_likes">
         <!-- <i class="fas fa-heart"></i> -->
-        <i class="far fa-heart"></i>
+        <span class="heart" @click="addLike">
+          <i class="far fa-heart"></i>
+        </span>
         {{ article.likes_count }}いいね
       </div>
     </div>
@@ -92,7 +94,11 @@ export default {
     deleteArticle() {
       this.toggleModal();
       this.$emit("eventArticleDelete", this.article.id);
-    }
+    },
+    /**
+     * いいねをつける
+     */
+    addLike() {}
   }
 };
 </script>

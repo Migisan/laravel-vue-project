@@ -39,7 +39,8 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 return new \App\Services\ArticleService(
                     $app->make(\App\Repositories\UserRepositoryInterface::class),
-                    $app->make(\App\Repositories\ArticleRepositoryInterface::class)
+                    $app->make(\App\Repositories\ArticleRepositoryInterface::class),
+                    $app->make(\App\Repositories\LikeRepositoryInterface::class)
                 );
             },
         );
@@ -58,6 +59,14 @@ class AppServiceProvider extends ServiceProvider
                     $app->make(\App\Repositories\UserRepositoryInterface::class)
                 );
             },
+        );
+
+        /**
+         * いいね
+         */
+        $this->app->bind(
+            \App\Repositories\LikeRepositoryInterface::class,
+            \App\Repositories\LikeRepository::class,
         );
     }
 

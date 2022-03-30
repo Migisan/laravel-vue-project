@@ -6,19 +6,26 @@ use App\Services\ArticleServiceInterface;
 
 use App\Repositories\ArticleRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\LikeRepositoryInterface;
 
 class ArticleService implements ArticleServiceInterface
 {
+  private $user_repository;
   private $article_repository;
+  private $like_repository;
 
   /**
    * コンストラクタ
    */
-  public function __construct(UserRepositoryInterface $user_repository, ArticleRepositoryInterface $article_repository)
-  {
+  public function __construct(
+    UserRepositoryInterface $user_repository,
+    ArticleRepositoryInterface $article_repository,
+    LikeRepositoryInterface $like_repository
+  ) {
     // DI
     $this->user_repository = $user_repository;
     $this->article_repository = $article_repository;
+    $this->like_repository = $like_repository;
   }
 
   /**
@@ -88,5 +95,24 @@ class ArticleService implements ArticleServiceInterface
   {
     // 削除
     $this->article_repository->delete($id);
+  }
+
+  /**
+   * いいねをつける
+   * 
+   * @param int $id
+   * @return void
+   */
+  public function addLikeToArticle(int $id): void
+  {
+    // ログイン中ユーザー
+    $auth = $this->user_repository->getAuth();
+
+    $params = [
+      'user_id' => $auth->id,
+      'article_id' => $id,
+    ];
+
+    $this->like_repository->insert($params);
   }
 }
