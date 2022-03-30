@@ -64,12 +64,6 @@ export default {
      */
     auth() {
       return this.$store.state.auth.user;
-    },
-    /**
-     * 現在のページ
-     */
-    currentPage() {
-      return this.$store.state.article.currentPage;
     }
   },
   created() {
