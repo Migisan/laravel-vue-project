@@ -2,45 +2,40 @@
 
 namespace App\Repositories;
 
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-
-use App\Models\Article;
-
 interface ArticleRepositoryInterface
 {
   /**
    * 記事一覧を取得
    * 
-   * @return LengthAwarePaginator
+   * @return \Illuminate\Pagination\LengthAwarePaginator
    */
-  public function getList(): LengthAwarePaginator;
+  public function getList(): \Illuminate\Pagination\LengthAwarePaginator;
 
   /**
    * ユーザーの記事一覧を取得
    * 
    * @param int $user_id
-   * @return Collection
+   * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function getListByUser(int $user_id): Collection;
+  public function getListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection;
 
   /**
    * 記事を登録
    * 
    * @param array $params
    * @param int $user_id
-   * @return Article
+   * @return \App\Models\Article
    */
-  public function insert(array $params, int $user_id): Article;
+  public function insert(array $params, int $user_id): \App\Models\Article;
 
   /**
    * 記事を更新
    * 
    * @param int $id
    * @param array $params
-   * @return Article
+   * @return \App\Models\Article
    */
-  public function update(int $id, array $params): Article;
+  public function update(int $id, array $params): \App\Models\Article;
 
   /**
    * 記事を削除
