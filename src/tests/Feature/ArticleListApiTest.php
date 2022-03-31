@@ -54,7 +54,7 @@ class ArticleListApiTest extends TestCase
         $response->dump();
 
         // データ取得
-        $articles = Article::with(['user', 'likes'])->orderBy('updated_at', 'desc')->get();
+        $articles = Article::with(['user', 'like_users'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
         $expected_data_count = $this->article_data_count;
@@ -73,6 +73,7 @@ class ArticleListApiTest extends TestCase
                         'updated_at',
                     ],
                     'likes_count',
+                    'like_user_ids',
                 ],
             ],
             'links' => [
@@ -105,6 +106,7 @@ class ArticleListApiTest extends TestCase
                     'updated_at' => $article->user->updated_at->format($this->datetime_format),
                 ],
                 'likes_count' => $article->likes->count(),
+                'like_user_ids' => $article->likes->sortBy('user_id')->pluck('user_id'),
             ];
         })->all();
         $expected_links = [

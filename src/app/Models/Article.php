@@ -48,10 +48,20 @@ class Article extends BaseModel
     /**
      * likesテーブル リレーション
      * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Like', 'article_id', 'id');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function like_users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->BelongsToMany('App\Models\User', 'likes');
+        return $this->BelongsToMany('App\Models\User', 'likes', 'article_id', 'user_id');
     }
 }

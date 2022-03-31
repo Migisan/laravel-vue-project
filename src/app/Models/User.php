@@ -70,7 +70,17 @@ class User extends Authenticatable
      */
     public function articles(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Models\Article');
+        return $this->hasMany('App\Models\Article', 'user_id', 'id');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Like', 'user_id', 'id');
     }
 
     /**
@@ -78,8 +88,8 @@ class User extends Authenticatable
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function like_articles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->BelongsToMany('App\Models\Article', 'likes');
+        return $this->BelongsToMany('App\Models\Article', 'likes', 'user_id', 'article_id');
     }
 }

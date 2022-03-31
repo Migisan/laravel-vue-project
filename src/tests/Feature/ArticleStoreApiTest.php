@@ -69,6 +69,8 @@ class ArticleStoreApiTest extends TestCase
                 'image_path',
                 'updated_at',
             ],
+            'likes_count',
+            'like_user_ids',
         ];
         $expected_data = [
             'id' => $article->id,
@@ -82,6 +84,8 @@ class ArticleStoreApiTest extends TestCase
                 'image_path' => $article->user->image_path,
                 'updated_at' => $article->user->updated_at->format($this->datetime_format),
             ],
+            'likes_count' => 0,
+            'like_user_ids' => [],
         ];
 
         // 検証

@@ -6,16 +6,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-use App\Models\Article;
 use App\Models\User;
+use App\Models\Article;
+use App\Models\Like;
 
 class ArticleUpdateApiTest extends TestCase
 {
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private const LIKES_COUNT = 1;
+
     private $user;
     private $article;
+    private $like;
     private $datetime_format;
 
     /**
@@ -32,6 +36,12 @@ class ArticleUpdateApiTest extends TestCase
 
         // 記事データ生成
         $this->article = factory(Article::class)->create();
+
+        // いいねデータ生成
+        $this->like = factory(Like::class, self::LIKES_COUNT)->create([
+            'article_id' => $this->article->id,
+            'user_id'    => $this->user->id,
+        ]);
 
         // 日時フォーマット
         $this->datetime_format = config('const.DATETIME_FORMAT');
@@ -72,6 +82,8 @@ class ArticleUpdateApiTest extends TestCase
                 'image_path',
                 'updated_at',
             ],
+            'likes_count',
+            'like_user_ids',
         ];
         $expected_data = [
             'id' => $article->id,
@@ -85,6 +97,8 @@ class ArticleUpdateApiTest extends TestCase
                 'image_path' => $article->user->image_path,
                 'updated_at' => $article->user->updated_at->format($this->datetime_format),
             ],
+            'likes_count' => self::LIKES_COUNT,
+            'like_user_ids' => $article->likes->sortBy('user_id')->pluck('user_id'),
         ];
 
         // 検証
