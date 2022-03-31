@@ -52,7 +52,7 @@ export default {
      * ログインチェック
      */
     isLogin() {
-      return this.$store.getters["auth/check"];
+      return this.$store.getters["auth/checkLogin"];
     },
     /**
      * ログイン中のユーザID

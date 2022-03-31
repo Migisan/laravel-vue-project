@@ -60,6 +60,12 @@ export default {
       return this.$store.state.article.apiStatus;
     },
     /**
+     * ログインチェック
+     */
+    isLogin() {
+      return this.$store.getters["auth/checkLogin"];
+    },
+    /**
      * ログインユーザー
      */
     auth() {
@@ -67,8 +73,16 @@ export default {
     }
   },
   created() {
-    if (this.auth) {
-      this.dotShowFlg = this.auth.id === this.article.user.id;
+    if (!this.isLogin) {
+      return false;
+    }
+
+    // モーダル表示ボタンの切り替え
+    this.dotShowFlg = this.auth.id === this.article.user.id;
+
+    // いいねの切り替え
+    if (this.article.like_user_ids.includes(this.auth.id)) {
+      this.isLike = true;
     }
   },
   methods: {
