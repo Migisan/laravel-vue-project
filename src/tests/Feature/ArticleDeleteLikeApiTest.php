@@ -34,10 +34,15 @@ class ArticleDeleteLikeApiTest extends TestCase
         $this->user = factory(User::class)->create();
 
         // 記事データ生成
-        $this->article = factory(Article::class)->create();
+        $this->article = factory(Article::class)->create([
+            'user_id' => $this->user->id,
+        ]);
 
-        // 記事データ生成
-        $this->like = factory(Like::class)->create();
+        // いいねデータ生成
+        $this->like = factory(Like::class)->create([
+            'article_id' => $this->article->id,
+            'user_id' => $this->user->id,
+        ]);
     }
 
     /**
