@@ -2,19 +2,19 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\Article;
-use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
-$factory->define(Article::class, function (Faker $faker) {
-    $users = User::all();
-    $user_id = $users->count() === 0 ? 0 : $users->random(1)[0]->id;
+use App\Models\Article;
+use App\Models\User;
 
+$factory->define(Article::class, function (Faker $faker) {
     return [
         'title' => $faker->word(),
         'body' => $faker->text(),
-        'user_id' => $user_id,
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
+        },
         'created_at' => $faker->dateTime(),
         'updated_at' => $faker->dateTime(),
     ];

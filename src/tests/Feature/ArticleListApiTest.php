@@ -15,7 +15,9 @@ class ArticleListApiTest extends TestCase
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
+    private $user_data_count;
     private $article_data_count;
+    private $like_data_count;
     private $datetime_format;
 
     /**
@@ -28,14 +30,30 @@ class ArticleListApiTest extends TestCase
         parent::setUp();
 
         // ユーザーデータ生成
-        factory(User::class, 3)->create();
+        $this->user_data_count = 3;
+        factory(User::class, $this->user_data_count)->create();
 
         // 記事データ生成
         $this->article_data_count = 5;
-        factory(Article::class, $this->article_data_count)->create();
+        for ($i = $this->article_data_count; $i > 0; $i--) {
+            $article_user_id = User::inRandomOrder()->first()->id;
+
+            factory(Article::class)->create([
+                'user_id' => $article_user_id,
+            ]);
+        }
 
         // いいねデータ生成
-        factory(Like::class, 10)->create();
+        $this->like_data_count = 10;
+        for ($i = $this->like_data_count; $i > 0; $i--) {
+            $like_article_id = Article::inRandomOrder()->first()->id;
+            $like_user_id = User::inRandomOrder()->first()->id;
+
+            factory(Like::class)->create([
+                'article_id' => $like_article_id,
+                'user_id' => $like_user_id,
+            ]);
+        }
 
         // 日時フォーマット
         $this->datetime_format = config('const.DATETIME_FORMAT');
