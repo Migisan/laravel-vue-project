@@ -2,9 +2,6 @@
 
 namespace App\Repositories;
 
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-
 use App\Repositories\ArticleRepositoryInterface;
 
 use App\Models\Article;
@@ -14,20 +11,20 @@ class ArticleRepository implements ArticleRepositoryInterface
   /**
    * 記事一覧を取得
    * 
-   * @return LengthAwarePaginator
+   * @return \Illuminate\Pagination\LengthAwarePaginator
    */
-  public function getList(): LengthAwarePaginator
+  public function getList(): \Illuminate\Pagination\LengthAwarePaginator
   {
-    return Article::with(['user'])->orderBy('updated_at', 'desc')->paginate();
+    return Article::with(['user', 'likes'])->orderBy('updated_at', 'desc')->paginate();
   }
 
   /**
    * ユーザーの記事一覧を取得
    * 
    * @param int $user_id
-   * @return Collection
+   * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function getListByUser(int $user_id): Collection
+  public function getListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection
   {
     return Article::with(['user'])->where('user_id', $user_id)->orderBy('updated_at', 'desc')->get();
   }
@@ -37,9 +34,9 @@ class ArticleRepository implements ArticleRepositoryInterface
    * 
    * @param array $params
    * @param int $user_id
-   * @return Article
+   * @return \App\Models\Article
    */
-  public function insert(array $params, int $user_id): Article
+  public function insert(array $params, int $user_id): \App\Models\Article
   {
     $article = new Article();
 
@@ -55,9 +52,9 @@ class ArticleRepository implements ArticleRepositoryInterface
    * 
    * @param int $id
    * @param array $params
-   * @return Article
+   * @return \App\Models\Article
    */
-  public function update(int $id, array $params): Article
+  public function update(int $id, array $params): \App\Models\Article
   {
     $article = Article::find($id);
 

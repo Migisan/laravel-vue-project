@@ -8,14 +8,14 @@ use Tests\TestCase;
 
 use App\Models\Article;
 use App\Models\User;
+use App\Models\Like;
 
 class ArticleListApiTest extends TestCase
 {
     // テスト後のデータベースリセット
     use RefreshDatabase;
 
-    private $user;
-    private $data_count;
+    private $article_data_count;
     private $datetime_format;
 
     /**
@@ -27,13 +27,15 @@ class ArticleListApiTest extends TestCase
     {
         parent::setUp();
 
-        // テストユーザーの作成
-        $this->user = factory(User::class)->create();
-
-        $this->data_count = 5;
+        // ユーザーデータ生成
+        factory(User::class, 3)->create();
 
         // 記事データ生成
-        factory(Article::class, $this->data_count)->create();
+        $this->article_data_count = 5;
+        factory(Article::class, $this->article_data_count)->create();
+
+        // いいねデータ生成
+        factory(Like::class, 10)->create();
 
         // 日時フォーマット
         $this->datetime_format = config('const.DATETIME_FORMAT');
@@ -52,10 +54,10 @@ class ArticleListApiTest extends TestCase
         $response->dump();
 
         // データ取得
-        $articles = Article::with(['user'])->orderBy('updated_at', 'desc')->get();
+        $articles = Article::with(['user', 'like_users'])->orderBy('updated_at', 'desc')->get();
 
         // 期待値
-        $expected_data_count = $this->data_count;
+        $expected_data_count = $this->article_data_count;
         $expected_structure = [
             'data' => [
                 '*' => [
@@ -70,6 +72,8 @@ class ArticleListApiTest extends TestCase
                         'image_path',
                         'updated_at',
                     ],
+                    'likes_count',
+                    'like_user_ids',
                 ],
             ],
             'links' => [
@@ -101,6 +105,8 @@ class ArticleListApiTest extends TestCase
                     'image_path' => $article->user->image_path,
                     'updated_at' => $article->user->updated_at->format($this->datetime_format),
                 ],
+                'likes_count' => $article->likes->count(),
+                'like_user_ids' => $article->likes->sortBy('user_id')->pluck('user_id'),
             ];
         })->all();
         $expected_links = [

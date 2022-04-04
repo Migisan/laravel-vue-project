@@ -8,7 +8,6 @@ use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -23,7 +22,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'image_path', 'password',
+        'name',
+        'email',
+        'image_path',
+        'password',
     ];
 
     /**
@@ -32,7 +34,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email_verified_at'
+        'password',
+        'remember_token',
+        'email_verified_at',
     ];
 
     /**
@@ -62,10 +66,30 @@ class User extends Authenticatable
     /**
      * articlesテーブル リレーション(子)
      * 
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function articles(): HasMany
+    public function articles(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('App\Models\Article');
+        return $this->hasMany('App\Models\Article', 'user_id', 'id');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Like', 'user_id', 'id');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function like_articles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->BelongsToMany('App\Models\Article', 'likes', 'user_id', 'article_id');
     }
 }

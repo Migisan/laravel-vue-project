@@ -2,34 +2,38 @@
 
 namespace App\Services;
 
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
-
 use App\Services\ArticleServiceInterface;
 
 use App\Repositories\ArticleRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\LikeRepositoryInterface;
 
 class ArticleService implements ArticleServiceInterface
 {
+  private $user_repository;
   private $article_repository;
+  private $like_repository;
 
   /**
    * コンストラクタ
    */
-  public function __construct(UserRepositoryInterface $user_repository, ArticleRepositoryInterface $article_repository)
-  {
+  public function __construct(
+    UserRepositoryInterface $user_repository,
+    ArticleRepositoryInterface $article_repository,
+    LikeRepositoryInterface $like_repository
+  ) {
     // DI
     $this->user_repository = $user_repository;
     $this->article_repository = $article_repository;
+    $this->like_repository = $like_repository;
   }
 
   /**
    * 記事一覧を取得
    * 
-   * @return LengthAwarePaginator
+   * @return \Illuminate\Pagination\LengthAwarePaginator
    */
-  public function getArticleList(): LengthAwarePaginator
+  public function getArticleList(): \Illuminate\Pagination\LengthAwarePaginator
   {
     $articles = $this->article_repository->getList();
 
@@ -40,9 +44,9 @@ class ArticleService implements ArticleServiceInterface
    * ユーザーの記事一覧を取得
    * 
    * @param int $user_id
-   * @return Collection
+   * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function getArticleListByUser(int $user_id): Collection
+  public function getArticleListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection
   {
     $articles = $this->article_repository->getListByUser($user_id);
 
@@ -91,5 +95,41 @@ class ArticleService implements ArticleServiceInterface
   {
     // 削除
     $this->article_repository->delete($id);
+  }
+
+  /**
+   * いいねをつける
+   * 
+   * @param int $id
+   * @return void
+   */
+  public function addLikeToArticle(int $id): void
+  {
+    // ログイン中ユーザー
+    $auth = $this->user_repository->getAuth();
+
+    $params = [
+      'user_id' => $auth->id,
+      'article_id' => $id,
+    ];
+
+    $this->like_repository->insert($params);
+  }
+
+  /**
+   * いいねを外す
+   * 
+   * @param int $id
+   * @return void
+   */
+  public function deleteLikeToArticle(int $id): void
+  {
+    // ログイン中ユーザー
+    $auth = $this->user_repository->getAuth();
+
+    $article_id = $id;
+    $user_id = $auth->id;
+
+    $this->like_repository->delete($article_id, $user_id);
   }
 }

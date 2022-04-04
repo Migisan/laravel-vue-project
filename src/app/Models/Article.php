@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends BaseModel
 {
+
+    // 論理削除
+    use SoftDeletes;
+
     /**
      * ホワイトリスト
      * 
@@ -14,6 +18,7 @@ class Article extends BaseModel
     protected $fillable = [
         'title',
         'body',
+        'user_id',
     ];
 
     /**
@@ -33,10 +38,30 @@ class Article extends BaseModel
     /**
      * usersテーブル リレーション(親)
      * 
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id', 'users');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Like', 'article_id', 'id');
+    }
+
+    /**
+     * likesテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function like_users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->BelongsToMany('App\Models\User', 'likes', 'article_id', 'user_id');
     }
 }

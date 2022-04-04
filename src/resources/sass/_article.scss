@@ -80,6 +80,14 @@
       }
     }
   }
+  &_likes {
+    .heart {
+      cursor: pointer;
+      .like {
+        color: $red;
+      }
+    }
+  }
 }
 
 .article_form {

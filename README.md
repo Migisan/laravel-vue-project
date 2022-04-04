@@ -326,7 +326,7 @@ $ php artisan make:test SampleApiTest
 use RefreshDatabase;
 ```
 
-テストの実行
+テストの実行(バックエンド)
 
 ```
 // 全テスト
@@ -338,6 +338,16 @@ $ ./vendor/bin/phpunit --testdox
 $ php artisan test tests/Feature/SampleTest.php
 or
 $ ./vendor/bin/phpunit tests/Feature/SampleTest.php
+```
+
+テストの実行(フロントエンド)
+
+```
+// 全テスト
+$ npm run test
+
+// 個別テスト
+$ npm run test resources/js/tests/components/ExampleComponent.test.js
 ```
 
 ### 自動テスト(CircleCI)

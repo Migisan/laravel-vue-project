@@ -21,8 +21,19 @@
         <li @click="deleteArticle">削除</li>
       </ul>
     </div>
-    <h2>{{ article.title }}</h2>
-    <p>{{ article.body }}</p>
+    <h2 class="article_title">{{ article.title }}</h2>
+    <p class="article_body">{{ article.body }}</p>
+    <div class="article_detail">
+      <div class="article_likes">
+        <span v-if="isLike" class="heart" @click="deleteLike" key="like">
+          <i class="fas fa-heart like"></i>
+        </span>
+        <span v-else class="heart" @click="addLike" key="not-like">
+          <i class="far fa-heart not-like"></i>
+        </span>
+        {{ article.likes_count }}いいね
+      </div>
+    </div>
   </li>
 </template>
 
@@ -37,7 +48,8 @@ export default {
   data() {
     return {
       dotShowFlg: false,
-      modalShowFlg: false
+      modalShowFlg: false,
+      isLike: false
     };
   },
   computed: {
@@ -48,21 +60,29 @@ export default {
       return this.$store.state.article.apiStatus;
     },
     /**
+     * ログインチェック
+     */
+    isLogin() {
+      return this.$store.getters["auth/checkLogin"];
+    },
+    /**
      * ログインユーザー
      */
     auth() {
       return this.$store.state.auth.user;
-    },
-    /**
-     * 現在のページ
-     */
-    currentPage() {
-      return this.$store.state.article.currentPage;
     }
   },
   created() {
-    if (this.auth) {
-      this.dotShowFlg = this.auth.id === this.article.user.id;
+    if (!this.isLogin) {
+      return false;
+    }
+
+    // モーダル表示ボタンの切り替え
+    this.dotShowFlg = this.auth.id === this.article.user.id;
+
+    // いいねの切り替え
+    if (this.article.like_user_ids.includes(this.auth.id)) {
+      this.isLike = true;
     }
   },
   methods: {
@@ -85,6 +105,20 @@ export default {
     deleteArticle() {
       this.toggleModal();
       this.$emit("eventArticleDelete", this.article.id);
+    },
+    /**
+     * いいねをつける
+     */
+    async addLike() {
+      await this.$store.dispatch("article/addLike", this.article.id);
+      this.isLike = true;
+    },
+    /**
+     * いいねを外す
+     */
+    async deleteLike() {
+      await this.$store.dispatch("article/deleteLike", this.article.id);
+      this.isLike = false;
     }
   }
 };

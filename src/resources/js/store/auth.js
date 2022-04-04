@@ -10,7 +10,7 @@ const state = {
 
 const getters = {
   // ログインチェック
-  check: state => !!state.user,
+  checkLogin: state => !!state.user,
   // ログイン中のユーザーID
   userid: state => (state.user ? state.user.id : 0),
   // ログイン中のユーザー名
