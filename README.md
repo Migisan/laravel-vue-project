@@ -1,5 +1,9 @@
 # Laravel+Vue.js プロジェクトテンプレート
 
+## 概要図
+
+![](document/system.drawio.svg)
+
 ## 環境構築
 
 ### プロジェクトのインストール
