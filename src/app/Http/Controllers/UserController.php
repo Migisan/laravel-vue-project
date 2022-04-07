@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * ユーザー一覧
      *
      * @return \Illuminate\Http\Response
      */
@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * ユーザー登録画面
      *
      * @return \Illuminate\Http\Response
      */
@@ -53,7 +53,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * ユーザー登録処理
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -64,7 +64,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * ユーザー詳細画面
      *
      * @param int $id
      * @return \Illuminate\Http\Response
@@ -81,7 +81,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * ユーザー編集画面
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -92,7 +92,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * ユーザー更新処理
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -111,7 +111,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * ユーザー削除処理
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
