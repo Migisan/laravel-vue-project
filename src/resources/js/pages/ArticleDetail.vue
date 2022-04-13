@@ -21,11 +21,7 @@
         <li @click="deleteArticle">削除</li>
       </ul>
     </div>
-    <h2 class="article_title">
-      <router-link :to="`/article/?id=${article.id}`">
-        {{ article.title }}
-      </router-link>
-    </h2>
+    <h2 class="article_title">{{ article.title }}</h2>
     <p class="article_body">{{ article.body }}</p>
     <div class="article_detail">
       <div class="article_likes">
@@ -44,8 +40,8 @@
 <script>
 export default {
   props: {
-    article: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -57,6 +53,12 @@ export default {
     };
   },
   computed: {
+    /**
+     * 記事
+     */
+    article() {
+      return this.$store.state.article;
+    },
     /**
      * APIステータスチェック
      */
@@ -123,6 +125,14 @@ export default {
     async deleteLike() {
       await this.$store.dispatch("article/deleteLike", this.article.id);
       this.isLike = false;
+    }
+  },
+  watch: {
+    $route: {
+      async handler() {
+        await this.$store.dispatch("article/getArticleData", this.id);
+      },
+      immediate: true
     }
   }
 };
