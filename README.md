@@ -14,9 +14,10 @@ cd project
 git clone https://github.com/Migisan/laravel-vue-project.git .
 ```
 
-### Laradock の設定ファイル編集
+### Laradock のインストール
 
 ```
+git clone https://github.com/laradock/laradock.git
 cd laradock
 cp .env.example .env
 ```
@@ -67,6 +68,7 @@ $ exit
 
 ```
 cd ../src/
+cp .env.example .env
 vim .env
 ```
 
@@ -81,7 +83,7 @@ DB_PASSWORD=laradock/.envのMYSQL_PASSWORD
 
 // メール
 MAIL_DRIVER=smtp
-MAIL_DRIVER=mailhog
+MAIL_HOST=mailhog
 MAIL_PORT=1025
 MAIL_USERNAME=user
 MAIL_PASSWORD=password
@@ -90,15 +92,21 @@ MAIL_FROM_NAME=送信者の名前
 MAIL_FROM_ADDRESS=送信者のメールアドレス
 ```
 
-### APP KEY の生成、DB 構築
+### APP KEY の生成、DB 構築、シンボリックリンク張る
 
 ```
 docker-compose exec --user=laradock workspace bash
 $ php artisan key:generate
 $ php artisan migrate
 $ php artisan db:seed
+$ php artisan storage:link
 $ exit
 ```
+
+### 画像の配置
+
+src/storage/app/public ディレクトリ直下に user ディレクトリを作成し、<br>
+test.png のファイル名で画像を配置する。
 
 ### ブラウザで確認
 
