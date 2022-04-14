@@ -23,7 +23,7 @@ class ArticleController extends Controller
     public function __construct(ArticleServiceInterface $article_service)
     {
         // ミドルウェア
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth')->except(['index', 'show']);
         // DI
         $this->article_service = $article_service;
     }
@@ -73,9 +73,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
-        //
+        $article = $this->article_service->findArticle($id);
+
+        return new ArticleResource($article);
     }
 
     /**

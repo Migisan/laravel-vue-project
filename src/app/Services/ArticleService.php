@@ -54,6 +54,19 @@ class ArticleService implements ArticleServiceInterface
   }
 
   /**
+   * 記事取得
+   * 
+   * @param int $id
+   * @return \App\Models\Article $article
+   */
+  public function findArticle(int $id): \App\Models\Article
+  {
+    $article = $this->article_repository->find($id);
+
+    return $article;
+  }
+
+  /**
    * 記事を登録
    * 
    * @param array $input

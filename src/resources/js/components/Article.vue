@@ -21,7 +21,11 @@
         <li @click="deleteArticle">削除</li>
       </ul>
     </div>
-    <h2 class="article_title">{{ article.title }}</h2>
+    <h2 class="article_title">
+      <router-link :to="`/article/?id=${article.id}`">
+        {{ article.title }}
+      </router-link>
+    </h2>
     <p class="article_body">{{ article.body }}</p>
     <div class="article_detail">
       <div class="article_likes">

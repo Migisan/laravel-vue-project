@@ -5,6 +5,7 @@ const state = {
   articles: null,
   currentPage: 0,
   lastPage: 0,
+  article: null,
   apiStatus: null,
   storeErrorMessages: null
 };
@@ -13,7 +14,7 @@ const getters = {};
 
 const mutations = {
   /**
-   * 記事設定
+   * 記事一覧設定
    *
    * @param {*} state
    * @param {*} articles
@@ -38,6 +39,15 @@ const mutations = {
    */
   setLastPage(state, lastPage) {
     state.lastPage = lastPage;
+  },
+  /**
+   * 記事設定
+   *
+   * @param {*} state
+   * @param {*} article
+   */
+  setArticle(state, article) {
+    state.article = article;
   },
   /**
    * APIステータス設定
@@ -78,6 +88,29 @@ const actions = {
       context.commit("setArticles", response.data.data);
       context.commit("setCurrentPage", response.data.meta.current_page);
       context.commit("setLastPage", response.data.meta.last_page);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
+  },
+  /**
+   * 記事データ取得アクション
+   *
+   * @param {*} context
+   * @param {*} id
+   */
+  async getArticleData(context, id) {
+    // API実行
+    context.commit("setApiStatus", null);
+    const response = await axios.get(`/api/articles/${id}`);
+    console.log(response);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setArticle", response.data.article);
       return false;
     }
 
