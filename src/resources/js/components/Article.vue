@@ -21,7 +21,11 @@
         <li @click="deleteArticle">削除</li>
       </ul>
     </div>
-    <h2 class="article_title">{{ article.title }}</h2>
+    <h2 class="article_title">
+      <router-link :to="`/article/?id=${article.id}`">
+        {{ article.title }}
+      </router-link>
+    </h2>
     <p class="article_body">{{ article.body }}</p>
     <div class="article_detail">
       <div class="article_likes">
@@ -47,9 +51,7 @@ export default {
   },
   data() {
     return {
-      dotShowFlg: false,
-      modalShowFlg: false,
-      isLike: false
+      modalShowFlg: false
     };
   },
   computed: {
@@ -60,29 +62,22 @@ export default {
       return this.$store.state.article.apiStatus;
     },
     /**
-     * ログインチェック
+     * ログイン中のユーザID
      */
-    isLogin() {
-      return this.$store.getters["auth/checkLogin"];
+    authid() {
+      return this.$store.getters["auth/userid"];
     },
     /**
-     * ログインユーザー
+     * モーダル表示ボタンフラグ
      */
-    auth() {
-      return this.$store.state.auth.user;
-    }
-  },
-  created() {
-    if (!this.isLogin) {
-      return false;
-    }
-
-    // モーダル表示ボタンの切り替え
-    this.dotShowFlg = this.auth.id === this.article.user.id;
-
-    // いいねの切り替え
-    if (this.article.like_user_ids.includes(this.auth.id)) {
-      this.isLike = true;
+    dotShowFlg() {
+      return this.authid === this.article.user.id;
+    },
+    /**
+     * いいね切り替え
+     */
+    isLike() {
+      return this.article.like_user_ids.includes(this.authid);
     }
   },
   methods: {
@@ -111,14 +106,12 @@ export default {
      */
     async addLike() {
       await this.$store.dispatch("article/addLike", this.article.id);
-      this.isLike = true;
     },
     /**
      * いいねを外す
      */
     async deleteLike() {
       await this.$store.dispatch("article/deleteLike", this.article.id);
-      this.isLike = false;
     }
   }
 };

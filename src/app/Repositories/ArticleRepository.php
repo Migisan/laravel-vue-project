@@ -26,7 +26,18 @@ class ArticleRepository implements ArticleRepositoryInterface
    */
   public function getListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection
   {
-    return Article::with(['user'])->where('user_id', $user_id)->orderBy('updated_at', 'desc')->get();
+    return Article::with(['user', 'likes'])->where('user_id', $user_id)->orderBy('updated_at', 'desc')->get();
+  }
+
+  /**
+   * 記事取得
+   * 
+   * @param int $id
+   * @return \App\Models\Article
+   */
+  public function find($id): \App\Models\Article
+  {
+    return Article::with(['user', 'likes'])->find($id);
   }
 
   /**

@@ -20,6 +20,14 @@ interface ArticleRepositoryInterface
   public function getListByUser(int $user_id): \Illuminate\Database\Eloquent\Collection;
 
   /**
+   * 記事取得
+   * 
+   * @param int $id
+   * @return \App\Models\Article
+   */
+  public function find($id): \App\Models\Article;
+
+  /**
    * 記事を登録
    * 
    * @param array $params
