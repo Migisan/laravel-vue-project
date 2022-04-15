@@ -229,6 +229,25 @@ const actions = {
     // 成功
     if (response.status === OK) {
       context.commit("setApiStatus", true);
+
+      // 記事
+      if (
+        context.state.article &&
+        context.state.article.id === response.data.id
+      ) {
+        context.commit("setArticle", response.data);
+      }
+
+      // 記事一覧
+      const articles = Array.from(context.state.articles);
+      const changeArticleIndex = articles.findIndex(article => {
+        return article.id === response.data.id;
+      });
+      if (changeArticleIndex > -1) {
+        articles.splice(changeArticleIndex, 1, response.data);
+        context.commit("setArticles", articles);
+      }
+
       return false;
     }
 
@@ -251,6 +270,25 @@ const actions = {
     // 成功
     if (response.status === OK) {
       context.commit("setApiStatus", true);
+
+      // 記事
+      if (
+        context.state.article &&
+        context.state.article.id === response.data.id
+      ) {
+        context.commit("setArticle", response.data);
+      }
+
+      // 記事一覧
+      const articles = Array.from(context.state.articles);
+      const changeArticleIndex = articles.findIndex(article => {
+        return article.id === response.data.id;
+      });
+      if (changeArticleIndex > -1) {
+        articles.splice(changeArticleIndex, 1, response.data);
+        context.commit("setArticles", articles);
+      }
+
       return false;
     }
 

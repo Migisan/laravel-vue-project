@@ -130,6 +130,11 @@ class ArticleController extends Controller
     {
         // いいねをつける
         $this->article_service->addLikeToArticle($id);
+
+        // 記事取得
+        $article = $this->article_service->findArticle($id);
+
+        return new ArticleResource($article);
     }
 
     /**
@@ -141,5 +146,10 @@ class ArticleController extends Controller
     {
         // いいねを外す
         $this->article_service->deleteLikeToArticle($id);
+
+        // 記事取得
+        $article = $this->article_service->findArticle($id);
+
+        return new ArticleResource($article);
     }
 }
