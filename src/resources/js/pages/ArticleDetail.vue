@@ -1,40 +1,42 @@
 <template>
-  <li class="article">
-    <div class="article_header">
-      <div class="article_icon">
-        <router-link :to="`/user/?id=${article.user.id}`">
-          <img
-            :src="article.user.image_path"
-            :alt="article.user.name + 'のプロフィール画像'"
-          />
-        </router-link>
+  <div v-if="article" class="article_detail">
+    <div class="article">
+      <div class="article_header">
+        <div class="article_icon">
+          <router-link :to="`/user/?id=${article.user.id}`">
+            <img
+              :src="article.user.image_path"
+              :alt="article.user.name + 'のプロフィール画像'"
+            />
+          </router-link>
+        </div>
+        <div class="article_info">
+          <div class="article_username">{{ article.user.name }}</div>
+          <div class="article_updated_at">{{ article.updated_at }}</div>
+        </div>
+        <div v-show="dotShowFlg" class="article_dot" @click="toggleModal">
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
+        <ul v-show="modalShowFlg" class="article_modal">
+          <li @click="showArticleForm">編集</li>
+          <li @click="deleteArticle">削除</li>
+        </ul>
       </div>
-      <div class="article_info">
-        <div class="article_username">{{ article.user.name }}</div>
-        <div class="article_updated_at">{{ article.updated_at }}</div>
+      <h2 class="article_title">{{ article.title }}</h2>
+      <p class="article_body">{{ article.body }}</p>
+      <div class="article_detail">
+        <div class="article_likes">
+          <span v-if="isLike" class="heart" @click="deleteLike" key="like">
+            <i class="fas fa-heart like"></i>
+          </span>
+          <span v-else class="heart" @click="addLike" key="not-like">
+            <i class="far fa-heart not-like"></i>
+          </span>
+          {{ article.likes_count }}いいね
+        </div>
       </div>
-      <div v-show="dotShowFlg" class="article_dot" @click="toggleModal">
-        <i class="fas fa-ellipsis-v"></i>
-      </div>
-      <ul v-show="modalShowFlg" class="article_modal">
-        <li @click="showArticleForm">編集</li>
-        <li @click="deleteArticle">削除</li>
-      </ul>
     </div>
-    <h2 class="article_title">{{ article.title }}</h2>
-    <p class="article_body">{{ article.body }}</p>
-    <div class="article_detail">
-      <div class="article_likes">
-        <span v-if="isLike" class="heart" @click="deleteLike" key="like">
-          <i class="fas fa-heart like"></i>
-        </span>
-        <span v-else class="heart" @click="addLike" key="not-like">
-          <i class="far fa-heart not-like"></i>
-        </span>
-        {{ article.likes_count }}いいね
-      </div>
-    </div>
-  </li>
+  </div>
 </template>
 
 <script>
@@ -47,9 +49,7 @@ export default {
   },
   data() {
     return {
-      dotShowFlg: false,
-      modalShowFlg: false,
-      isLike: false
+      modalShowFlg: false
     };
   },
   computed: {
@@ -57,7 +57,7 @@ export default {
      * 記事
      */
     article() {
-      return this.$store.state.article;
+      return this.$store.state.article.article;
     },
     /**
      * APIステータスチェック
@@ -66,29 +66,22 @@ export default {
       return this.$store.state.article.apiStatus;
     },
     /**
-     * ログインチェック
+     * ログイン中のユーザID
      */
-    isLogin() {
-      return this.$store.getters["auth/checkLogin"];
+    authid() {
+      return this.$store.getters["auth/userid"];
     },
     /**
-     * ログインユーザー
+     * モーダル表示ボタンフラグ
      */
-    auth() {
-      return this.$store.state.auth.user;
-    }
-  },
-  created() {
-    if (!this.isLogin) {
-      return false;
-    }
-
-    // モーダル表示ボタンの切り替え
-    this.dotShowFlg = this.auth.id === this.article.user.id;
-
-    // いいねの切り替え
-    if (this.article.like_user_ids.includes(this.auth.id)) {
-      this.isLike = true;
+    dotShowFlg() {
+      return this.authid === this.article.user.id;
+    },
+    /**
+     * いいね切り替え
+     */
+    isLike() {
+      return this.article.like_user_ids.includes(this.authid);
     }
   },
   methods: {
@@ -117,14 +110,12 @@ export default {
      */
     async addLike() {
       await this.$store.dispatch("article/addLike", this.article.id);
-      this.isLike = true;
     },
     /**
      * いいねを外す
      */
     async deleteLike() {
       await this.$store.dispatch("article/deleteLike", this.article.id);
-      this.isLike = false;
     }
   },
   watch: {

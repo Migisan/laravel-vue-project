@@ -110,7 +110,7 @@ const actions = {
     // 成功
     if (response.status === OK) {
       context.commit("setApiStatus", true);
-      context.commit("setArticle", response.data.article);
+      context.commit("setArticle", response.data);
       return false;
     }
 
