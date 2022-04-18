@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use App\Models\Article;
-use App\Models\User;
 use App\Models\Like;
 
 class LikeListApiTest extends TestCase
@@ -64,7 +63,6 @@ class LikeListApiTest extends TestCase
             ->get();
 
         // 期待値
-        $expected_data_count = $this->like_data_count;
         $expected_structure = [
             '*' => [
                 'user' => [
