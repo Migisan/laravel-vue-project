@@ -68,6 +68,14 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\LikeRepositoryInterface::class,
             \App\Repositories\LikeRepository::class,
         );
+        $this->app->bind(
+            \App\Services\LikeServiceInterface::class,
+            function ($app) {
+                return new \App\Services\LikeService(
+                    $app->make(\App\Repositories\LikeRepositoryInterface::class)
+                );
+            },
+        );
     }
 
     /**

@@ -17,8 +17,7 @@ class LikeResource extends JsonResource
         $datetime_format = config('const.DATETIME_FORMAT');
 
         return [
-            'article_id' => $this->article_id,
-            'user_id'    => $this->user_id,
+            'user'       => new UserResource($this->user),
             'created_at' => $this->created_at->format($datetime_format),
         ];
     }

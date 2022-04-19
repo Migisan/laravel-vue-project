@@ -32,7 +32,9 @@
           <span v-else class="heart" @click="addLike" key="not-like">
             <i class="far fa-heart not-like"></i>
           </span>
-          {{ article.likes_count }}いいね
+          <router-link :to="`/likes/?id=${article.id}`">
+            {{ article.likes_count }}いいね
+          </router-link>
         </div>
       </div>
     </div>

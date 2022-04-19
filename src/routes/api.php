@@ -43,3 +43,8 @@ Route::post('articles/{article}/delete_like', 'ArticleController@deleteLike')->n
  * ユーザー
  */
 Route::resource('users', 'UserController')->only(['show', 'update', 'destroy']);
+
+/**
+ * いいね
+ */
+Route::resource('likes', 'LikeController')->only(['index']);
