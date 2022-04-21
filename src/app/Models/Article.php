@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends BaseModel
 {
-
     // 論理削除
     use SoftDeletes;
 
