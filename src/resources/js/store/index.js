@@ -9,6 +9,16 @@ import user from "./user";
 import like from "./like";
 
 Vue.use(Vuex);
+Vue.mixin({
+  computed: {
+    /**
+     * ログインチェック
+     */
+    isLogin() {
+      return this.$store.getters["auth/checkLogin"];
+    }
+  }
+});
 
 const store = new Vuex.Store({
   modules: {

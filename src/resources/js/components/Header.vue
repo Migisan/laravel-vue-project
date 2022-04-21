@@ -49,12 +49,6 @@ export default {
   },
   computed: {
     /**
-     * ログインチェック
-     */
-    isLogin() {
-      return this.$store.getters["auth/checkLogin"];
-    },
-    /**
      * ログイン中のユーザID
      */
     userid() {
