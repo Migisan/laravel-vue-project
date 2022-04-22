@@ -63,4 +63,14 @@ class Article extends BaseModel
     {
         return $this->BelongsToMany('App\Models\User', 'likes', 'article_id', 'user_id');
     }
+
+    /**
+     * commentsテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Comment', 'article_id', 'id');
+    }
 }
