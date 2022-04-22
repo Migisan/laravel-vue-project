@@ -69,6 +69,7 @@ class ArticleStoreApiTest extends TestCase
                 'image_path',
                 'updated_at',
             ],
+            'comments_count',
             'likes_count',
             'like_user_ids',
         ];
@@ -84,6 +85,7 @@ class ArticleStoreApiTest extends TestCase
                 'image_path' => $article->user->image_path,
                 'updated_at' => $article->user->updated_at->format($this->datetime_format),
             ],
+            'comments_count' => 0,
             'likes_count' => 0,
             'like_user_ids' => [],
         ];

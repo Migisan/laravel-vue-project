@@ -9,6 +9,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Like;
+use App\Models\Comment;
 
 class ArticleUpdateApiTest extends TestCase
 {
@@ -16,10 +17,12 @@ class ArticleUpdateApiTest extends TestCase
     use RefreshDatabase;
 
     private const LIKES_COUNT = 1;
+    private const COMMENTS_COUNT = 1;
 
     private $user;
     private $article;
     private $like;
+    private $comment;
     private $datetime_format;
 
     /**
@@ -39,6 +42,12 @@ class ArticleUpdateApiTest extends TestCase
 
         // いいねデータ生成
         $this->like = factory(Like::class, self::LIKES_COUNT)->create([
+            'article_id' => $this->article->id,
+            'user_id'    => $this->user->id,
+        ]);
+
+        // コメントデータ生成
+        $this->comment = factory(Comment::class, self::COMMENTS_COUNT)->create([
             'article_id' => $this->article->id,
             'user_id'    => $this->user->id,
         ]);
@@ -82,6 +91,7 @@ class ArticleUpdateApiTest extends TestCase
                 'image_path',
                 'updated_at',
             ],
+            'comments_count',
             'likes_count',
             'like_user_ids',
         ];
@@ -97,7 +107,8 @@ class ArticleUpdateApiTest extends TestCase
                 'image_path' => $article->user->image_path,
                 'updated_at' => $article->user->updated_at->format($this->datetime_format),
             ],
-            'likes_count' => self::LIKES_COUNT,
+            'comments_count' => self::LIKES_COUNT,
+            'likes_count' => self::COMMENTS_COUNT,
             'like_user_ids' => $article->likes->sortBy('user_id')->pluck('user_id'),
         ];
 
