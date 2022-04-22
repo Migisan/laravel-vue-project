@@ -48,3 +48,8 @@ Route::resource('users', 'UserController')->only(['show', 'update', 'destroy']);
  * いいね
  */
 Route::resource('likes', 'LikeController')->only(['index']);
+
+/**
+ * コメント
+ */
+Route::resource('comments', 'CommentController')->only(['store']);

@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->foreign('article_id')->references('id')->on('articles');
             $table->bigInteger('user_id')->unsigned()->comment('ユーザーID');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->text('body')->comment('コメント');
+            $table->text('comment')->comment('コメント');
             $table->timestamps();
             $table->softDeletes();
         });
