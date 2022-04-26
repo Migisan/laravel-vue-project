@@ -27,7 +27,7 @@
       </router-link>
     </h2>
     <p class="article_body">{{ article.body }}</p>
-    <div class="article_detail">
+    <div class="article_more">
       <div class="article_comments">
         <span class="">
           <i class="far fa-comment"></i>
