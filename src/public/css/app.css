@@ -331,6 +331,14 @@ img {
   border-bottom: 1px solid #bbbbbb;
 }
 
+.article_more {
+  display: flex;
+}
+
+.article_comments {
+  margin-right: 8px;
+}
+
 .article_likes .heart {
   cursor: pointer;
 }

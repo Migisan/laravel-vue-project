@@ -24,7 +24,13 @@
       </div>
       <h2 class="article_title">{{ article.title }}</h2>
       <p class="article_body">{{ article.body }}</p>
-      <div class="article_detail">
+      <div class="article_more">
+        <div class="article_comments">
+          <span class="">
+            <i class="far fa-comment"></i>
+          </span>
+          {{ article.comments_count }}コメント
+        </div>
         <div class="article_likes">
           <span v-if="isLike" class="heart" @click="deleteLike" key="like">
             <i class="fas fa-heart like"></i>
