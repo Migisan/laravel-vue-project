@@ -26,7 +26,7 @@
       <p class="article_body">{{ article.body }}</p>
       <div class="article_more">
         <div class="article_comments">
-          <span class="">
+          <span class="" @click="formShowFlg = !formShowFlg">
             <i class="far fa-comment"></i>
           </span>
           {{ article.comments_count }}コメント
@@ -44,6 +44,10 @@
         </div>
       </div>
     </div>
+    <form v-if="formShowFlg" class="comment_form" @submit.prevent="submit">
+      <textarea v-model="comment"></textarea>
+      <button type="submit">コメント投稿</button>
+    </form>
   </div>
 </template>
 
@@ -57,7 +61,9 @@ export default {
   },
   data() {
     return {
-      modalShowFlg: false
+      modalShowFlg: false,
+      formShowFlg: false,
+      comment: ""
     };
   },
   computed: {
@@ -71,7 +77,7 @@ export default {
      * APIステータスチェック
      */
     apiStatus() {
-      return this.$store.state.article.apiStatus;
+      return this.$store.state.comment.apiStatus;
     },
     /**
      * ログイン中のユーザID
@@ -84,6 +90,12 @@ export default {
      */
     dotShowFlg() {
       return this.authid === this.article.user.id;
+    },
+    /**
+     * コメント投稿エラーチェック
+     */
+    storeErrors() {
+      return this.$store.state.comment.storeErrorMessages;
     },
     /**
      * いいね切り替え
@@ -112,6 +124,38 @@ export default {
     deleteArticle() {
       this.toggleModal();
       this.$emit("eventArticleDelete", this.article.id);
+    },
+    /**
+     * コメントフォームを開く
+     */
+    openForm() {
+      // フォームを開く
+      this.formShowFlg = true;
+    },
+    /**
+     * コメントフォームを閉じる
+     */
+    closeForm() {
+      // フォームをクリア
+      this.comment = "";
+      // フォームを閉じる
+      this.formShowFlg = false;
+    },
+    /**
+     * コメント投稿
+     */
+    async submit() {
+      console.log(this.comment);
+
+      // 登録
+      await this.$store.dispatch("comment/store", {
+        article_id: this.id,
+        comment: this.comment
+      });
+
+      if (this.apiStatus || this.errorCode !== null) {
+        this.closeForm();
+      }
     },
     /**
      * いいねをつける
