@@ -23,19 +23,23 @@ class CommentController extends Controller
     public function __construct(CommentServiceInterface $comment_service)
     {
         // ミドルウェア
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['index']);
         // DI
         $this->comment_service = $comment_service;
     }
 
     /**
-     * Display a listing of the resource.
+     * コメント一覧
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $article_id = $request->article_id;
+
+        $comments = $this->comment_service->getCommentListByArticle($article_id);
+
+        return CommentResource::collection($comments);
     }
 
     /**

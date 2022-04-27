@@ -52,4 +52,4 @@ Route::resource('likes', 'LikeController')->only(['index']);
 /**
  * コメント
  */
-Route::resource('comments', 'CommentController')->only(['store']);
+Route::resource('comments', 'CommentController')->only(['index', 'store']);

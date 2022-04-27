@@ -5,6 +5,14 @@ namespace App\Repositories;
 interface CommentRepositoryInterface
 {
   /**
+   * 一覧取得
+   * 
+   * @param int $article_id
+   * @return \Illuminate\Database\Eloquent\Collection
+   */
+  public function getListByArticleId(int $article_id): \Illuminate\Database\Eloquent\Collection;
+
+  /**
    * コメントを登録
    * 
    * @param array $params

@@ -25,6 +25,19 @@ class CommentService implements CommentServiceInterface
   }
 
   /**
+   * コメント一覧を取得
+   * 
+   * @param int $article_id
+   * @return \Illuminate\Database\Eloquent\Collection
+   */
+  public function getCommentListByArticle(int $article_id): \Illuminate\Database\Eloquent\Collection
+  {
+    $comments = $this->comment_repository->getListByArticleId($article_id);
+
+    return $comments;
+  }
+
+  /**
    * コメントを登録
    * 
    * @param array $input
