@@ -32,6 +32,31 @@ const mutations = {
 
 const actions = {
   /**
+   * コメント一覧取得アクション
+   *
+   * @param {*} context
+   * @param {*} id
+   */
+  async getCommentList(context, id) {
+    // API実行
+    context.commit("setApiStatus", null);
+    const response = await axios.get(`/api/comments`, {
+      params: { article_id: id }
+    });
+    console.log(response);
+
+    // 成功
+    if (response.status === OK) {
+      context.commit("setApiStatus", true);
+      context.commit("setComments", response.data);
+      return false;
+    }
+
+    // 失敗
+    context.commit("setApiStatus", false);
+    context.commit("error/setCode", response.status, { root: true });
+  },
+  /**
    * コメント投稿アクション
    *
    * @param {*} context
@@ -49,8 +74,7 @@ const actions = {
       await context.dispatch("article/getArticleData", data.article_id, {
         root: true
       });
-      // コメント一覧データ取得し直し
-      // await context.dispatch("getCommentList", data.article_id);
+      await context.dispatch("getCommentList", data.article_id);
       context.commit(
         "message/setContent",
         {

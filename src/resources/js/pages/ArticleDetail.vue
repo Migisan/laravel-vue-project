@@ -48,6 +48,25 @@
       <textarea v-model="comment"></textarea>
       <button type="submit">コメント投稿</button>
     </form>
+    <ul v-if="comments" class="comment_list">
+      <li v-for="comment in comments" :key="comment.id" class="comment">
+        <div class="comment_icon">
+          <router-link :to="`/user/?id=${comment.user.id}`">
+            <img
+              :src="comment.user.image_path"
+              :alt="comment.user.name + 'のプロフィール画像'"
+            />
+          </router-link>
+        </div>
+        <div class="comment_text">
+          <div class="comment_header">
+            <div class="comment_username">{{ comment.user.name }}</div>
+            <div class="comment_updated_at">{{ comment.updated_at }}</div>
+          </div>
+          <p class="comment_body">{{ comment.comment }}</p>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -72,6 +91,12 @@ export default {
      */
     article() {
       return this.$store.state.article.article;
+    },
+    /**
+     * コメント
+     */
+    comments() {
+      return this.$store.state.comment.comments;
     },
     /**
      * APIステータスチェック
@@ -174,6 +199,7 @@ export default {
     $route: {
       async handler() {
         await this.$store.dispatch("article/getArticleData", this.id);
+        await this.$store.dispatch("comment/getCommentList", this.id);
       },
       immediate: true
     }

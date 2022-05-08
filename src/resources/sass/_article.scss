@@ -102,27 +102,6 @@
   }
 }
 
-.comment_form {
-  overflow: hidden;
-  padding: 0 0 8px;
-  border-bottom: 1px solid $gray;
-  textarea {
-    display: block;
-    width: 100%;
-    border-radius: 4px;
-    border: 1px solid $gray;
-  }
-  button {
-    float: right;
-    padding: 4px 8px;
-    margin: 8px 0 0;
-    border-radius: 8px;
-    background: $blue;
-    color: $white;
-    font-weight: bold;
-  }
-}
-
 .article_form {
   position: absolute;
   top: 0;
