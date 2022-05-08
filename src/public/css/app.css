@@ -331,6 +331,14 @@ img {
   border-bottom: 1px solid #bbbbbb;
 }
 
+.article_more {
+  display: flex;
+}
+
+.article_comments {
+  margin-right: 8px;
+}
+
 .article_likes .heart {
   cursor: pointer;
 }
@@ -390,6 +398,73 @@ img {
   background: #3490dc;
   color: #ffffff;
   font-weight: bold;
+}
+
+.comment_form {
+  overflow: hidden;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.comment_form textarea {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #bbbbbb;
+}
+
+.comment_form button {
+  float: right;
+  padding: 4px 8px;
+  margin: 8px 0 0;
+  border-radius: 8px;
+  background: #3490dc;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.comment {
+  padding: 8px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid #bbbbbb;
+  display: flex;
+}
+
+.comment_icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  background: #bbbbbb;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.comment_icon svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.comment_icon img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center center;
+     object-position: center center;
+}
+
+.comment_header {
+  display: flex;
+  align-items: center;
+  margin: 0 0 4px;
+}
+
+.comment_updated_at {
+  margin-left: 4px;
+  font-size: 8px;
 }
 
 .user_detail,

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends BaseModel
 {
-
     // 論理削除
     use SoftDeletes;
 
@@ -63,5 +62,15 @@ class Article extends BaseModel
     public function like_users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->BelongsToMany('App\Models\User', 'likes', 'article_id', 'user_id');
+    }
+
+    /**
+     * commentsテーブル リレーション
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Models\Comment', 'article_id', 'id');
     }
 }

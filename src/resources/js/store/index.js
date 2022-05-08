@@ -6,6 +6,7 @@ import error from "./error";
 import message from "./message";
 import article from "./article";
 import user from "./user";
+import comment from "./comment";
 import like from "./like";
 
 Vue.use(Vuex);
@@ -27,6 +28,7 @@ const store = new Vuex.Store({
     message,
     article,
     user,
+    comment,
     like
   }
 });

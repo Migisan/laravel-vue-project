@@ -76,6 +76,23 @@ class AppServiceProvider extends ServiceProvider
                 );
             },
         );
+
+        /**
+         * コメント
+         */
+        $this->app->bind(
+            \App\Repositories\CommentRepositoryInterface::class,
+            \App\Repositories\CommentRepository::class,
+        );
+        $this->app->bind(
+            \App\Services\CommentServiceInterface::class,
+            function ($app) {
+                return new \App\Services\CommentService(
+                    $app->make(\App\Repositories\CommentRepositoryInterface::class),
+                    $app->make(\App\Repositories\UserRepositoryInterface::class)
+                );
+            },
+        );
     }
 
     /**

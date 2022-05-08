@@ -24,7 +24,13 @@
       </div>
       <h2 class="article_title">{{ article.title }}</h2>
       <p class="article_body">{{ article.body }}</p>
-      <div class="article_detail">
+      <div class="article_more">
+        <div class="article_comments">
+          <span class="" @click="formShowFlg = !formShowFlg">
+            <i class="far fa-comment"></i>
+          </span>
+          {{ article.comments_count }}コメント
+        </div>
         <div class="article_likes">
           <span v-if="isLike" class="heart" @click="deleteLike" key="like">
             <i class="fas fa-heart like"></i>
@@ -38,6 +44,29 @@
         </div>
       </div>
     </div>
+    <form v-if="formShowFlg" class="comment_form" @submit.prevent="submit">
+      <textarea v-model="comment"></textarea>
+      <button type="submit">コメント投稿</button>
+    </form>
+    <ul v-if="comments" class="comment_list">
+      <li v-for="comment in comments" :key="comment.id" class="comment">
+        <div class="comment_icon">
+          <router-link :to="`/user/?id=${comment.user.id}`">
+            <img
+              :src="comment.user.image_path"
+              :alt="comment.user.name + 'のプロフィール画像'"
+            />
+          </router-link>
+        </div>
+        <div class="comment_text">
+          <div class="comment_header">
+            <div class="comment_username">{{ comment.user.name }}</div>
+            <div class="comment_updated_at">{{ comment.updated_at }}</div>
+          </div>
+          <p class="comment_body">{{ comment.comment }}</p>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -51,7 +80,9 @@ export default {
   },
   data() {
     return {
-      modalShowFlg: false
+      modalShowFlg: false,
+      formShowFlg: false,
+      comment: ""
     };
   },
   computed: {
@@ -62,10 +93,16 @@ export default {
       return this.$store.state.article.article;
     },
     /**
+     * コメント
+     */
+    comments() {
+      return this.$store.state.comment.comments;
+    },
+    /**
      * APIステータスチェック
      */
     apiStatus() {
-      return this.$store.state.article.apiStatus;
+      return this.$store.state.comment.apiStatus;
     },
     /**
      * ログイン中のユーザID
@@ -78,6 +115,12 @@ export default {
      */
     dotShowFlg() {
       return this.authid === this.article.user.id;
+    },
+    /**
+     * コメント投稿エラーチェック
+     */
+    storeErrors() {
+      return this.$store.state.comment.storeErrorMessages;
     },
     /**
      * いいね切り替え
@@ -108,6 +151,38 @@ export default {
       this.$emit("eventArticleDelete", this.article.id);
     },
     /**
+     * コメントフォームを開く
+     */
+    openForm() {
+      // フォームを開く
+      this.formShowFlg = true;
+    },
+    /**
+     * コメントフォームを閉じる
+     */
+    closeForm() {
+      // フォームをクリア
+      this.comment = "";
+      // フォームを閉じる
+      this.formShowFlg = false;
+    },
+    /**
+     * コメント投稿
+     */
+    async submit() {
+      console.log(this.comment);
+
+      // 登録
+      await this.$store.dispatch("comment/store", {
+        article_id: this.id,
+        comment: this.comment
+      });
+
+      if (this.apiStatus || this.errorCode !== null) {
+        this.closeForm();
+      }
+    },
+    /**
      * いいねをつける
      */
     async addLike() {
@@ -124,6 +199,7 @@ export default {
     $route: {
       async handler() {
         await this.$store.dispatch("article/getArticleData", this.id);
+        await this.$store.dispatch("comment/getCommentList", this.id);
       },
       immediate: true
     }

@@ -81,6 +81,7 @@ class UserDetailApiTest extends TestCase
                         'image_path',
                         'updated_at',
                     ],
+                    'comments_count',
                     'likes_count',
                     'like_user_ids',
                 ],
@@ -106,6 +107,7 @@ class UserDetailApiTest extends TestCase
                     'image_path' => $article->user->image_path,
                     'updated_at' => $article->user->updated_at->format($this->datetime_format),
                 ],
+                'comments_count' => $article->comments->count(),
                 'likes_count' => $article->likes->count(),
                 'like_user_ids' => $article->likes->sortBy('user_id')->pluck('user_id'),
             ];
