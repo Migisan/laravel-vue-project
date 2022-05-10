@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
@@ -90,6 +91,37 @@ class AuthController extends Controller
         } else {
             // 認証失敗
             return $this->sendFailedLoginResponse($request);
+        }
+    }
+
+    /**
+     * ログイン画面表示(Google認証)
+     * 
+     * @param string $provider
+     * @return Socialite
+     */
+    public function redirectToProvider(string $provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    /**
+     * ログイン(Google認証)
+     * 
+     * @param Request $request
+     * @param string $provider
+     * @return Auth
+     */
+    public function handleProviderCallback(string $provider)
+    {
+        $providerUser = Socialite::driver($provider)->user();
+        // $providerUser = Socialite::driver($provider)->stateless()->user();
+
+        $user = User::where('email', $providerUser->getEmail())->first();
+
+        if ($user) {
+            Auth::login($user);
+            return redirect('/');
         }
     }
 

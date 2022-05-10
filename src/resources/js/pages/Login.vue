@@ -22,6 +22,7 @@
     <div class="panels">
       <div class="panel" v-show="tab === 'login'">
         ログイン画面
+        <a href="/login/google" class="google-login-link">Googleログイン</a>
         <form class="form" @submit.prevent="login">
           <div class="form-row">
             <label for="login-email">メールアドレス</label>
