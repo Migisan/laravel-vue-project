@@ -39,13 +39,8 @@ class LoginRedirectToProviderTest extends TestCase
         $target = parse_url($response->headers->get('location'));
         $this->assertSame('accounts.google.com', $target['host']);
 
-        // ローカル環境のみで実行
-        dump(App::environment());
-        if (App::environment('testing')) {
-            $query = explode('&', $target['query']);
-            // ToDo: CirclCIで.envファイルを設定できるようにする
-            $this->assertContains('redirect_uri=' . urlencode(config('services.google.redirect')), $query);
-            $this->assertContains('client_id=' . config('services.google.client_id'), $query);
-        }
+        $query = explode('&', $target['query']);
+        $this->assertContains('redirect_uri=' . urlencode(config('services.google.redirect')), $query);
+        $this->assertContains('client_id=' . config('services.google.client_id'), $query);
     }
 }
