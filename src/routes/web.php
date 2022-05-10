@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any?}', function() {
+Route::prefix('login')->name('login.')->group(function () {
+    Route::get('/{provider}', 'AuthController@redirectToProvider')->name('{provider}');
+    Route::get('/{provider}/callback', 'AuthController@handleProviderCallback')->name('{provider}.callback');
+});
+
+Route::get('/{any?}', function () {
     return view('index');
 })->where('any', '.+');

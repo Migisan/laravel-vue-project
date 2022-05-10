@@ -223,6 +223,20 @@ img {
   font-weight: bold;
 }
 
+.google-login-link {
+  display: block;
+  padding: 8px 16px;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: #e3342f;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.google-login-link:hover {
+  color: #ffffff;
+}
+
 .article_list {
   max-width: 400px;
   padding: 8px 0;
